@@ -7,7 +7,8 @@ COMMIT_MSG_FILE=$1
 COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
 
 # 정규표현식: [태그] 커밋 내용
-REGEX="^\[(Feat|Fix|Hotfix|Docs|Test|Chore|Del|Refactor|Merge|Add|Rename|Move)\] [^\.]+$"
+REGEX="^\[(Feat|Fix|Hotfix|Docs|Test|Chore|Del|Refactor|Merge|Add|Rename|Move)\] .+$
+"
 
 # 커밋 메시지 검증
 if ! echo "$COMMIT_MSG" | grep -Eq "$REGEX"; then
