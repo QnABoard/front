@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Button from '@/components/atoms/Button';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -11,7 +12,11 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  return <QueryClientProvider client={queryClient}>...</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Button variant='primary'>테스트 버튼</Button>
+    </QueryClientProvider>
+  );
 };
 
 export default App;
