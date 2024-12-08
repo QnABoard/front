@@ -1,5 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Button from '@/components/atoms/Button';
+import { RouterProvider, createBrowserRouter } from 'react-router';
+import router from '@/routes/router';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,8 +14,10 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
+  const appRouter = createBrowserRouter(router);
   return (
     <QueryClientProvider client={queryClient}>
+      <RouterProvider router={appRouter} />
       <Button variant='primary'>테스트 버튼</Button>
     </QueryClientProvider>
   );
