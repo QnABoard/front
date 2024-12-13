@@ -52,7 +52,7 @@ const StyledInput = styled.input`
   }
 
   ::placeholder {
-    color: transparent; /* placeholder-transparent */
+    color: transparent;
   }
 `;
 
