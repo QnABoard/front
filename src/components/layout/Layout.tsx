@@ -14,7 +14,6 @@ const Layout = () => {
 export default Layout;
 
 const LayoutContainer = styled.div`
-  background-color: gray;
   width: 1000px;
   margin: 0 auto;
   min-height: 100vh;

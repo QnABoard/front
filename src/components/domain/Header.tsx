@@ -1,20 +1,36 @@
 import styled from 'styled-components';
-import { ReactComopnent as Logo } from '@/assets/logo.svg';
-const Header = () => {
-  return (
-    <HeaderContainer>
-      <Logo />
-      <div>유저 아바타</div>
-    </HeaderContainer>
-  );
-};
+import logo from '@/assets/logo.svg';
+import Avatar from '../ui/atoms/Avator';
+
+const Header = () => (
+  <HeaderContainer>
+    <HeaderWrapper>
+      <img src={logo} alt='Logo' />
+      <div>
+        <Avatar
+          src='https://jmagazine.joins.com/_data2/photo/2021/04/838745483_D5lXOQuU_5.jpg'
+          size='small'
+          alt='User Avatar'
+        />
+      </div>
+    </HeaderWrapper>
+  </HeaderContainer>
+);
 
 export default Header;
 
 const HeaderContainer = styled.div`
   width: 100%;
   height: 170px;
-  background-color: green;
   display: flex;
   align-items: center;
+  justify-content: center;
+`;
+
+const HeaderWrapper = styled.div`
+  width: 980px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
