@@ -15,7 +15,7 @@ const styles = {
     display: inline-block;
     border-radius: 50%;
     overflow: hidden;
-    object-fit: cover; /* 이미지가 영역에 맞게 들어가도록 */
+    object-fit: cover;
   `,
   big: `
     width: 200px;
