@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Button from '@/components/atoms/Button';
+import Button from '@/components/ui/atoms/Button';
 import { RouterProvider, createBrowserRouter } from 'react-router';
 import router from '@/routes/router';
 
