@@ -1,10 +1,23 @@
+import Avatar from '@/components/ui/atoms/Avator';
+import { Outlet } from 'react-router';
 import styled from 'styled-components';
 
 const MyPage = () => {
   return (
     <MyPageContainer>
-      <UserInfoWrapper>개인 정보 및 네비게이션</UserInfoWrapper>
-      <UserContentsWrapper>컨텐츠</UserContentsWrapper>
+      <UserProfileSection>
+        <AvatarContainer>
+          <Avatar
+            src='https://jmagazine.joins.com/_data2/photo/2021/04/838745483_D5lXOQuU_5.jpg'
+            size='big'
+            alt='User Avatar'
+          />
+          <UserName>땡땡땡님</UserName>
+        </AvatarContainer>
+      </UserProfileSection>
+      <UserContentSection>
+        <Outlet />
+      </UserContentSection>
     </MyPageContainer>
   );
 };
@@ -17,13 +30,28 @@ const MyPageContainer = styled.div`
   min-height: 100vh;
 `;
 
-const UserInfoWrapper = styled.div`
+const UserProfileSection = styled.section`
   width: 300px;
   min-height: 100vh;
+  position: relative;
 `;
 
-const UserContentsWrapper = styled.div`
+const UserContentSection = styled.section`
   width: 700px;
   min-height: 100vh;
   border-left: 1px solid black;
+  padding: 10px;
+  background-color: blue;
 `;
+
+const AvatarContainer = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 10%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+`;
+
+const UserName = styled.div``;
