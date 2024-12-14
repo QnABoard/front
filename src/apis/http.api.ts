@@ -23,14 +23,24 @@ export const createClient = (config?: AxiosRequestConfig): AxiosInstance => {
     (config) => {
       const accessToken = getToken();
       if (accessToken) {
-        config.headers = {
-          ...config.headers, // 기존 헤더 유지
-          Authorization: `Bearer ${accessToken}`, // 토큰 추가
-        };
+        if (config.headers && typeof config.headers.set === 'function') {
+          // AxiosHeaders 객체 처리
+          config.headers.set('Authorization', `Bearer ${accessToken}`);
+        } else {
+          // 일반 객체 초기화
+          config.headers = {
+            ...config.headers, // 기존 헤더 유지
+            Authorization: `Bearer ${accessToken}`,
+          } as any;
+        }
       }
+      console.log('Request Headers:', config.headers); // 디버깅용 로그
       return config;
     },
-    (error) => Promise.reject(error)
+    (error) => {
+      console.error('Request Error:', error);
+      return Promise.reject(error);
+    }
   );
 
   // 응답 인터셉터: 401 상태 처리
