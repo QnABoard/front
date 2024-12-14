@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router';
 import qublogo from '@/assets/qublogo.svg';
 import Input from '@/components/atoms/Input';
 import { useForm } from 'react-hook-form';
+import { login } from '@/apis/auth.api';
+import { useState } from 'react';
 
-interface LoginFormData {
+export interface LoginProps {
   email: string;
   password: string;
 }
@@ -15,11 +17,22 @@ function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>();
+  } = useForm<LoginProps>();
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log('로그인 정보:', data);
-    navigate('/');
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+
+  const onSubmit = async (data: LoginProps) => {
+    setIsLoading(true);
+    try {
+      await login(data);
+      alert('로그인에 성공했습니다!');
+      navigate('/'); // 로그인 성공 시 메인 페이지로 이동
+    } catch (error: any) {
+      console.error('로그인 실패:', error);
+      alert(error.message || '로그인에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -48,7 +61,9 @@ function LoginPage() {
           </InputWrapper>
           {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
 
-          <SubmitButton type='submit'>로그인</SubmitButton>
+          <SubmitButton type='submit' disabled={isLoading}>
+            {isLoading ? '로그인 중...' : '로그인'}
+          </SubmitButton>
         </Form>
 
         <BottomSection>
@@ -128,6 +143,11 @@ const SubmitButton = styled.button`
 
   &:hover {
     background-color: #e5e7eb;
+  }
+
+  &:disabled {
+    background-color: #e5e7eb;
+    cursor: not-allowed;
   }
 `;
 
