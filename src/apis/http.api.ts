@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { getToken, removeToken } from '@/store/slices/authSlice'; // 토큰 유틸리티 함수 import
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosHeaders } from 'axios';
+import { getToken, removeToken } from '@/utils/token'; // 토큰 유틸리티 함수 import
 import { logout } from '@/store/slices/authSlice';
 import { store } from '@/store/store';
 
@@ -63,43 +63,6 @@ export const createClient = (config?: AxiosRequestConfig): AxiosInstance => {
 
 // 기본 Axios 인스턴스 생성
 export const httpClient = createClient();
-
-// API 요청 함수
-export const authApi = {
-  join: async (data: { email: string; password: string; nickname: string }) => {
-    try {
-      const response = await httpClient.post('/api/signup', data);
-      return response.data;
-    } catch (error) {
-      console.error('Signup API Error:', error);
-      throw error;
-    }
-  },
-  login: async (data: { email: string; password: string }) => {
-    try {
-      const response = await httpClient.post('/api/login', data);
-      const { token } = response.data;
-
-      // 토큰 저장
-      localStorage.setItem('accessToken', token); // 필요 시 유틸리티 함수 사용 가능
-      return response.data;
-    } catch (error) {
-      console.error('Login API Error:', error);
-      throw error;
-    }
-  },
-  logout: async () => {
-    try {
-      await httpClient.post('/api/logout');
-      removeToken(); // 토큰 삭제
-      store.dispatch(logout()); // Redux 상태 초기화
-      window.location.href = '/login'; // 로그인 페이지로 리다이렉트
-    } catch (error) {
-      console.error('Logout API Error:', error);
-      throw error;
-    }
-  },
-};
 
 // 기본 Axios 인스턴스 내보내기
 export default httpClient;
