@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import logo from '@/assets/logo.svg';
-import Avatar from '../ui/atoms/Avator';
+import Avatar from './ui/atoms/Avator';
 
 const Header = () => (
   <HeaderContainer>

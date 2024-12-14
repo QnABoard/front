@@ -41,7 +41,6 @@ const UserContentSection = styled.section`
   min-height: 100vh;
   border-left: 1px solid black;
   padding: 10px;
-  background-color: blue;
 `;
 
 const AvatarContainer = styled.div`
