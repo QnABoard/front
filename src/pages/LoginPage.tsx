@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router';
 import qublogo from '@/assets/qublogo.svg';
 import Input from '@/components/atoms/Input';
 import { useForm } from 'react-hook-form';
-import { login } from '@/apis/auth.api';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; // Redux 추가
+import { AppDispatch, RootState } from '@/store/store'; // Redux 타입 가져오기
+import { loginThunk } from '@/store/slices/authSlice'; // Thunk 가져오기
 
 export interface LoginProps {
   email: string;
@@ -13,28 +14,33 @@ export interface LoginProps {
 
 function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { loading, error, isLoggedIn } = useSelector(
+    (state: RootState) => state.auth
+  );
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginProps>();
 
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
-
   const onSubmit = async (data: LoginProps) => {
-    setIsLoading(true);
-    try {
-      await login(data);
+    const result = await dispatch(loginThunk(data));
+
+    if (loginThunk.fulfilled.match(result)) {
       alert('로그인에 성공했습니다!');
       navigate('/'); // 로그인 성공 시 메인 페이지로 이동
-    } catch (error: any) {
-      console.error('로그인 실패:', error);
-      alert(error.message || '로그인에 실패했습니다. 다시 시도해주세요.');
-    } finally {
-      setIsLoading(false);
+    } else {
+      alert(result.payload || '로그인에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
+  // 로그인 상태 확인 후 리다이렉트 처리
+  if (isLoggedIn) {
+    navigate('/');
+  }
   return (
     <Container>
       <InnerWrapper>
@@ -61,8 +67,10 @@ function LoginPage() {
           </InputWrapper>
           {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
 
-          <SubmitButton type='submit' disabled={isLoading}>
-            {isLoading ? '로그인 중...' : '로그인'}
+          {error && <ErrorText>{error}</ErrorText>}
+
+          <SubmitButton type='submit' disabled={loading}>
+            {loading ? '로그인 중...' : '로그인'}
           </SubmitButton>
         </Form>
 
