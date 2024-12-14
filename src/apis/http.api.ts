@@ -1,0 +1,95 @@
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { getToken, removeToken } from '@/store/slices/authSlice'; // 토큰 유틸리티 함수 import
+import { logout } from '@/store/slices/authSlice';
+import { store } from '@/store/store';
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3333';
+const DEFAULT_TIMEOUT = 30000; // 요청 제한 시간
+
+// Axios 인스턴스 생성 함수
+export const createClient = (config?: AxiosRequestConfig): AxiosInstance => {
+  const axiosInstance = axios.create({
+    baseURL: BASE_URL,
+    timeout: DEFAULT_TIMEOUT,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    withCredentials: true,
+    ...config,
+  });
+
+  // 요청 인터셉터: Authorization 헤더 동적 설정
+  axiosInstance.interceptors.request.use(
+    (config) => {
+      const accessToken = getToken();
+      if (accessToken) {
+        config.headers = {
+          ...config.headers, // 기존 헤더 유지
+          Authorization: `Bearer ${accessToken}`, // 토큰 추가
+        };
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+
+  // 응답 인터셉터: 401 상태 처리
+  axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response?.status === 401) {
+        console.warn('401 Unauthorized: Logging out user...');
+        removeToken(); // 토큰 삭제
+        store.dispatch(logout()); // Redux 상태 초기화
+        window.location.href = '/login'; // 로그인 페이지로 리다이렉트
+        return;
+      }
+      return Promise.reject(error);
+    }
+  );
+
+  return axiosInstance;
+};
+
+// 기본 Axios 인스턴스 생성
+export const httpClient = createClient();
+
+// API 요청 함수
+export const authApi = {
+  join: async (data: { email: string; password: string; nickname: string }) => {
+    try {
+      const response = await httpClient.post('/api/signup', data);
+      return response.data;
+    } catch (error) {
+      console.error('Signup API Error:', error);
+      throw error;
+    }
+  },
+  login: async (data: { email: string; password: string }) => {
+    try {
+      const response = await httpClient.post('/api/login', data);
+      const { token } = response.data;
+
+      // 토큰 저장
+      localStorage.setItem('accessToken', token); // 필요 시 유틸리티 함수 사용 가능
+      return response.data;
+    } catch (error) {
+      console.error('Login API Error:', error);
+      throw error;
+    }
+  },
+  logout: async () => {
+    try {
+      await httpClient.post('/api/logout');
+      removeToken(); // 토큰 삭제
+      store.dispatch(logout()); // Redux 상태 초기화
+      window.location.href = '/login'; // 로그인 페이지로 리다이렉트
+    } catch (error) {
+      console.error('Logout API Error:', error);
+      throw error;
+    }
+  },
+};
+
+// 기본 Axios 인스턴스 내보내기
+export default httpClient;
