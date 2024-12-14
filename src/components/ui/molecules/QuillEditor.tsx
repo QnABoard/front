@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 interface QuillEditorProps {
   value: string;
-  onChange: (content: string) => void;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
+const QuillEditor = ({ value, setValue }: QuillEditorProps) => {
+  console.log(value);
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
       ['bold', 'italic', 'underline', 'strike'],
       [{ list: 'ordered' }, { list: 'bullet' }],
-      ['link', 'image'],
+      ['link', 'image', 'code'],
       ['clean'],
     ],
   };
@@ -27,14 +27,14 @@ const QuillEditor = ({ value, onChange }: QuillEditorProps) => {
     'list',
     'bullet',
     'link',
+    'code',
     'image',
   ];
 
   return (
     <ReactQuill
       theme='snow'
-      value={value}
-      onChange={onChange}
+      onChange={setValue}
       modules={modules}
       formats={formats}
     />

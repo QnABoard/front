@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Button from '@/components/atoms/Button';
 import { RouterProvider, createBrowserRouter } from 'react-router';
 import router from '@/routes/router';
-import QuillEditor from './components/domain/QuillEditor';
+import QuillEditor from './components/ui/molecules/QuillEditor';
+import { useState } from 'react';
+import styled from 'styled-components';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,13 +17,19 @@ const queryClient = new QueryClient({
 
 const App = () => {
   const appRouter = createBrowserRouter(router);
+  const [value, setValue] = useState('');
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={appRouter} />
-      <Button variant='primary'>테스트 버튼</Button>
-      <QuillEditor />
+      <TestDiv>
+        <QuillEditor value={value} setValue={setValue} />
+      </TestDiv>
     </QueryClientProvider>
   );
 };
 
 export default App;
+
+const TestDiv = styled.div`
+  width: 600px;
+`;
