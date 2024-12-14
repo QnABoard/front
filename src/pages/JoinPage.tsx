@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import qublogo from '@/assets/qublogo.svg';
 import Input from '@/components/atoms/Input';
 import PasswordGuideLines from '@/components/atoms/PasswordGuideLines';
+import { join } from '@/apis/auth.api';
 
 export interface JoinProps {
   email: string;
@@ -14,6 +16,7 @@ export interface JoinProps {
 
 function JoinPage() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -22,11 +25,24 @@ function JoinPage() {
     watch,
   } = useForm<JoinProps>();
 
-  const password = watch('password');
+  const password = watch('password'); // PasswordGuideLines에서 실시간 사용
 
-  const onSubmit = (data: JoinProps) => {
-    console.log('가입 정보:', data);
-    navigate('/login');
+  const onSubmit = async (data: JoinProps) => {
+    setIsLoading(true);
+    try {
+      await join(data); // 회원가입 요청
+      alert('회원가입이 완료되었습니다!');
+      navigate('/login'); // 로그인 페이지로 이동
+    } catch (error: any) {
+      console.error('회원가입 중 에러 발생:', error);
+      if (error.response?.data?.message) {
+        alert(error.response.data.message); // 서버에서 반환된 에러 메시지 표시
+      } else {
+        alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -37,6 +53,7 @@ function JoinPage() {
         </LogoWrapper>
 
         <Form onSubmit={handleSubmit(onSubmit)}>
+          {/* 이메일 */}
           <InputWrapper>
             <StyledInput
               label='이메일'
@@ -52,10 +69,11 @@ function JoinPage() {
           </InputWrapper>
           {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
 
+          {/* 닉네임 */}
           <InputWrapper>
             <StyledInput
               label='닉네임'
-              inputType='nickname'
+              inputType='text'
               {...register('nickname', {
                 required: '닉네임을 입력하세요.',
                 minLength: {
@@ -67,6 +85,7 @@ function JoinPage() {
           </InputWrapper>
           {errors.nickname && <ErrorText>{errors.nickname.message}</ErrorText>}
 
+          {/* 비밀번호 */}
           <InputWrapper>
             <StyledInput
               label='비밀번호'
@@ -82,6 +101,7 @@ function JoinPage() {
           </InputWrapper>
           {errors.password && <ErrorText>{errors.password.message}</ErrorText>}
 
+          {/* 비밀번호 확인 */}
           <InputWrapper>
             <StyledInput
               label='비밀번호 확인'
@@ -89,8 +109,7 @@ function JoinPage() {
               {...register('confirmPassword', {
                 required: '비밀번호를 다시 확인하세요.',
                 validate: (value) =>
-                  value === watch('password') ||
-                  '비밀번호가 일치하지 않습니다.',
+                  value === password || '비밀번호가 일치하지 않습니다.',
               })}
             />
           </InputWrapper>
@@ -98,11 +117,15 @@ function JoinPage() {
             <ErrorText>{errors.confirmPassword.message}</ErrorText>
           )}
 
+          {/* 비밀번호 가이드라인 */}
           <PasswordGuideLinesWrapper>
             <PasswordGuideLines password={password || ''} />
           </PasswordGuideLinesWrapper>
 
-          <SubmitButton type='submit'>회원가입</SubmitButton>
+          {/* 제출 버튼 */}
+          <SubmitButton type='submit' disabled={isLoading}>
+            {isLoading ? '처리 중...' : '회원가입'}
+          </SubmitButton>
         </Form>
       </InnerWrapper>
     </Container>
@@ -185,6 +208,11 @@ const SubmitButton = styled.button`
 
   &:hover {
     background-color: #e5e7eb;
+  }
+
+  &:disabled {
+    background-color: #e5e7eb;
+    cursor: not-allowed;
   }
 `;
 
