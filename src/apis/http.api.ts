@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosHeaders } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { getToken, removeToken } from '@/utils/token'; // 토큰 유틸리티 함수 import
 import { logout } from '@/store/slices/authSlice';
 import { store } from '@/store/store';
