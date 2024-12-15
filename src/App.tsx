@@ -20,6 +20,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
+        <GlobalStyle />
         <RouterProvider router={appRouter} />
       </QueryClientProvider>
     </Provider>
