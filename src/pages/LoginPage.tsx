@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import qublogo from '@/assets/qublogo.svg';
-import Input from '@/components/atoms/Input';
+
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Redux 추가
 import { AppDispatch, RootState } from '@/store/store'; // Redux 타입 가져오기
 import { loginThunk } from '@/store/slices/authSlice'; // Thunk 가져오기
+import Input from '@/components/ui/atoms/Input';
 
 export interface LoginProps {
   email: string;

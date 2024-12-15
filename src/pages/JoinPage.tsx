@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import qublogo from '@/assets/qublogo.svg';
-import Input from '@/components/atoms/Input';
-import PasswordGuideLines from '@/components/atoms/PasswordGuideLines';
 import { join } from '@/apis/auth.api';
+import PasswordGuideLines from '@/components/ui/atoms/PasswordGuideLines';
+import Input from '@/components/ui/atoms/Input';
 
 export interface JoinProps {
   email: string;
