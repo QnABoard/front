@@ -1,5 +1,7 @@
-const HomePage = () => {
-  return <div>HomePage</div>;
-};
+import styled from 'styled-components';
 
-export default HomePage;
+export default function HomePage() {
+  return <HomePageStyle></HomePageStyle>;
+}
+
+const HomePageStyle = styled.div``;
