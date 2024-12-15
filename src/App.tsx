@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router';
 import router from '@/routes/router';
 import { Provider } from 'react-redux'; // Redux Provider 임포트
 import { store } from '@/store/store'; // 설정된 Redux 스토어 임포트
+import GlobalStyle from './styles/GlobalStyle';
 
 const queryClient = new QueryClient({
   defaultOptions: {
