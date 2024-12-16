@@ -7,6 +7,7 @@ import HomePage from '@/pages/HomePage';
 import JoinPage from '@/pages/JoinPage';
 import LoginPage from '@/pages/LoginPage';
 import MyPage from '@/pages/MyPage';
+import UpdateContentPage from '@/pages/UpdateContentPage';
 
 const router = [
   {
@@ -36,8 +37,12 @@ const router = [
         ],
       },
       {
-        path: '/post/:content_id',
+        path: '/posts/:content_id',
         element: <ContentDetailPage />,
+      },
+      {
+        path: '/posts/:content_id/edit',
+        element: <UpdateContentPage />,
       },
     ],
   },

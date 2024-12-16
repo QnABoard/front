@@ -1,33 +1,44 @@
 import styled from 'styled-components';
 import { EllipsisVerticalIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 interface Props {
   title: string;
   created_at: string;
   updated_at: string;
-  solved: number;
+  solve: boolean | undefined;
   view: number;
+  content_id: string;
 }
 
 export default function QuestionHeader({
   title,
   created_at,
   updated_at,
-  solved,
+  solve,
   view,
+  content_id,
 }: Props) {
+  const navigate = useNavigate();
+  /**
+   * 작성자 토큰
+   */
   const [dropDown, setDropDown] = useState(false);
 
   const handleDropDownClick = () => {
     setDropDown((prev) => !prev);
   };
 
+  const handleContentUpdateClick = () => {
+    navigate(`/posts/${content_id}/edit`);
+  };
+
   return (
     <QuestionHeaderStyle>
       <div className='title'>{title}</div>
       <div className='panel'>
-        <div className='solved'>{solved === 0 ? 'problem' : 'solve'}</div>
+        <div className='solved'>{solve ? 'solve' : 'problem'}</div>
         <div className='questionCreatedAt'>{created_at} 작성</div>
         {updated_at && (
           <div className='questionUpdatedAt'>{updated_at} 수정</div>
@@ -38,7 +49,8 @@ export default function QuestionHeader({
           </div>
           <div className='views'>{view}</div>
         </div>
-        {/* 질문자 토큰으로 보여줄 수정.삭제버튼 */}
+        {/* 작성자 토큰으로 보여줄 수정.삭제버튼 */}
+        {/* ref로 관리하여 바깥 클릭시 드롭다운 없어지게 */}
         <div className='dropDownWrap'>
           <div className='dropDownIcon' onClick={handleDropDownClick}>
             <EllipsisVerticalIcon />
@@ -46,7 +58,7 @@ export default function QuestionHeader({
           {dropDown && (
             <div className='dropDown'>
               <ul>
-                <li>수정하기</li>
+                <li onClick={handleContentUpdateClick}>수정하기</li>
                 <li>삭제하기</li>
               </ul>
             </div>
@@ -96,13 +108,15 @@ const QuestionHeaderStyle = styled.div`
         border: 0.1rem solid #bbbbbb;
         border-radius: 5px;
         width: 5rem;
-        padding: 0.5rem;
         transform: translate(-1.8rem, 0.5rem);
 
         ul {
           li {
             cursor: pointer;
-            padding: 0.2rem 0;
+            padding: 0.2rem 0.5rem;
+          }
+          li:hover {
+            background-color: #f3f3f3;
           }
         }
       }
