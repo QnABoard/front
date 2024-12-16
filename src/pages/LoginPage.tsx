@@ -39,9 +39,7 @@ function LoginPage() {
   };
 
   // 로그인 상태 확인 후 리다이렉트 처리
-  if (isLoggedIn) {
-    navigate('/');
-  }
+
   return (
     <Container>
       <InnerWrapper>
