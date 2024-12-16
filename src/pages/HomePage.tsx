@@ -1,5 +1,9 @@
+import MainTagList from '@/components/main-page/MainTagList';
+
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return <div>
+    <MainTagList />
+  </div>;
 };
 
 export default HomePage;
