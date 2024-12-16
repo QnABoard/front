@@ -13,6 +13,10 @@ export interface mainPosts {
   created_at: string;
   updated_at: string;
   solved: boolean;
+  nickname: string;
+  comment_count: number;
+  like_count: number;
+  tags: string;
 }
 export interface mainData {
   users: mainUsers;
