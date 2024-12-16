@@ -1,18 +1,15 @@
-export interface User {
+export interface UserInfo {
+  id: number;
   email: string;
   nickname: string;
-  role: 'user' | 'admin';
+  role: string;
 }
 
-// 토큰 인터페이스
-interface Tokens {
-  accessToken: string;
-}
-
-export interface AuthState {
+export interface UserState {
   isLoggedIn: boolean;
-  user: User | null;
-  tokens: Tokens | null;
+  token: string | null;
+  userInfo: UserInfo | null;
+  loading: boolean;
   error: string | null;
 }
 
@@ -22,20 +19,15 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface AuthResponse {
-  success: boolean;
-  token?: string;
-  user?: User;
-}
-
 export interface APIError {
   message: string;
 }
 
 export interface DecodedToken {
+  id: number;
   email: string;
   nickname: string;
-  role: string | string[]; // 단일 문자열 또는 배열
+  role: string;
   iat: number;
   exp: number;
 }
