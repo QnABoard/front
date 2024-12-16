@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import logo from '@/assets/logo.svg';
 import Avatar from './ui/atoms/Avator';
+import AuthButton from './AuthButton';
 
 const Header = () => (
   <HeaderContainer>
@@ -14,6 +15,7 @@ const Header = () => (
         />
       </div>
     </HeaderWrapper>
+    <AuthButton />
   </HeaderContainer>
 );
 

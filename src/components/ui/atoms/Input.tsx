@@ -20,7 +20,7 @@ interface LabelProps {
 
 const StyledLabel = styled.label<LabelProps>`
   position: absolute;
-  left: 1rem;
+  left: 2rem;
   top: 50%;
   transform: translateY(-50%);
   color: #727272;
