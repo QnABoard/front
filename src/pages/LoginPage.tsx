@@ -1,47 +1,43 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import qublogo from '@/assets/qublogo.svg';
-
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Redux 추가
-import { AppDispatch, RootState } from '@/store/store'; // Redux 타입 가져오기
-import { loginThunk } from '@/store/slices/authSlice'; // Thunk 가져오기
 import Input from '@/components/ui/atoms/Input';
+import { RootState } from '@/store/rootReducer';
+import { loginAsync } from '@/hooks/userSlice';
+import { AppDispatch } from '@/store/store';
 
-export interface LoginProps {
+type LoginFormData = {
   email: string;
   password: string;
-}
+};
 
 function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-
-  const { loading, error, isLoggedIn } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { loading, error } = useSelector((state: RootState) => state.user);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginProps>();
+  } = useForm<LoginFormData>();
 
-  const onSubmit = async (data: LoginProps) => {
-    const result = await dispatch(loginThunk(data));
+  const onSubmit = async (data: LoginFormData) => {
+    const result = await dispatch(loginAsync(data));
 
-    if (loginThunk.fulfilled.match(result)) {
+    if (loginAsync.fulfilled.match(result)) {
       alert('로그인에 성공했습니다!');
-      navigate('/'); // 로그인 성공 시 메인 페이지로 이동
+      navigate('/');
     } else {
-      alert(result.payload || '로그인에 실패했습니다. 다시 시도해주세요.');
+      alert(
+        (result.payload as string) ||
+          '로그인에 실패했습니다. 다시 시도해주세요.'
+      );
     }
   };
 
-  // 로그인 상태 확인 후 리다이렉트 처리
-  if (isLoggedIn) {
-    navigate('/');
-  }
   return (
     <Container>
       <InnerWrapper>
