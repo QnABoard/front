@@ -1,10 +1,25 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { getToken, removeToken } from '@/utils/token'; // 토큰 유틸리티 함수 import
-import { logout } from '@/store/slices/authSlice';
-import { store } from '@/store/store';
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosHeaders,
+  AxiosRequestHeaders,
+} from 'axios';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3333';
 const DEFAULT_TIMEOUT = 30000; // 요청 제한 시간
+
+// 토큰 관리 함수
+function getToken(): string | null {
+  return localStorage.getItem('token');
+}
+
+function setToken(token: string) {
+  localStorage.setItem('token', token);
+}
+
+function removeToken() {
+  localStorage.removeItem('token');
+}
 
 // Axios 인스턴스 생성 함수
 export const createClient = (config?: AxiosRequestConfig): AxiosInstance => {
@@ -21,17 +36,24 @@ export const createClient = (config?: AxiosRequestConfig): AxiosInstance => {
   // 요청 인터셉터: Authorization 헤더 동적 설정
   axiosInstance.interceptors.request.use(
     (config) => {
-      const accessToken = getToken();
+      const accessToken = getToken(); // 여기서 getToken()을 호출하여 실제로 사용
       if (accessToken) {
-        if (config.headers && typeof config.headers.set === 'function') {
-          // AxiosHeaders 객체 처리
-          config.headers.set('Authorization', `Bearer ${accessToken}`);
+        if (
+          config.headers &&
+          'set' in config.headers &&
+          typeof (config.headers as AxiosHeaders).set === 'function'
+        ) {
+          // AxiosHeaders 타입으로 헤더를 다루는 경우
+          (config.headers as AxiosHeaders).set(
+            'Authorization',
+            `Bearer ${accessToken}`
+          );
         } else {
-          // 일반 객체 초기화
+          // 일반 객체로 헤더를 다루는 경우
           config.headers = {
-            ...config.headers, // 기존 헤더 유지
+            ...config.headers,
             Authorization: `Bearer ${accessToken}`,
-          } as any;
+          } as AxiosRequestHeaders;
         }
       }
       console.log('Request Headers:', config.headers); // 디버깅용 로그
@@ -43,26 +65,13 @@ export const createClient = (config?: AxiosRequestConfig): AxiosInstance => {
     }
   );
 
-  // 응답 인터셉터: 401 상태 처리
-  axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response?.status === 401) {
-        console.warn('401 Unauthorized: Logging out user...');
-        removeToken(); // 토큰 삭제
-        store.dispatch(logout()); // Redux 상태 초기화
-        window.location.href = '/login'; // 로그인 페이지로 리다이렉트
-        return;
-      }
-      return Promise.reject(error);
-    }
-  );
-
   return axiosInstance;
 };
 
 // 기본 Axios 인스턴스 생성
 export const httpClient = createClient();
 
-// 기본 Axios 인스턴스 내보내기
+// 토큰 관련 함수 export
+export { setToken, removeToken, getToken };
+
 export default httpClient;
