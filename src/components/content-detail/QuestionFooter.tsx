@@ -3,7 +3,7 @@ import { RootState } from '@/store/rootReducer';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 interface Props {
@@ -26,6 +26,7 @@ export default function QuestionFooter({
   content_id,
 }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const nicknameCheck = useSelector(
@@ -50,7 +51,7 @@ export default function QuestionFooter({
         '로그인 후 이용할 수 있는 기능입니다.\n로그인 하시겠습니까??'
       );
       if (loginRequest) {
-        navigate('/login');
+        navigate('/login', { state: { from: location.pathname } });
       }
 
       return;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import qublogo from '@/assets/qublogo.svg';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux'; // Redux 추가
@@ -17,6 +17,8 @@ function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.user);
+  const location = useLocation();
+  const from = location.state?.from || '/';
 
   const {
     register,
@@ -29,7 +31,7 @@ function LoginPage() {
 
     if (loginAsync.fulfilled.match(result)) {
       alert('로그인에 성공했습니다!');
-      navigate('/');
+      navigate(from, { replace: true });
     } else {
       alert(
         (result.payload as string) ||
