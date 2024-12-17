@@ -1,22 +1,38 @@
+import { fetchLikedPost } from '@/apis/content.api';
+import { RootState } from '@/store/rootReducer';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 interface Props {
   tags: string;
+  nickname: string;
   like_count: number;
   liked: boolean;
   solve: boolean | undefined;
   handleSolvedClick(): void;
+  content_id: string;
 }
 
 export default function QuestionFooter({
   tags,
+  nickname,
   like_count,
   liked,
   handleSolvedClick,
   solve,
+  content_id,
 }: Props) {
+  const navigate = useNavigate();
+
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const nicknameCheck = useSelector(
+    (state: RootState) => state.user.userInfo?.nickname
+  );
+  console.log('liked', liked);
+
   /**
    * 헤더 토큰 데이터 통신으로 받아와야 함
    */
@@ -29,8 +45,19 @@ export default function QuestionFooter({
   }, [liked]);
 
   const handleHeartClick = () => {
+    if (!isLoggedIn) {
+      const loginRequest = confirm(
+        '로그인 후 이용할 수 있는 기능입니다.\n로그인 하시겠습니까??'
+      );
+      if (loginRequest) {
+        navigate('/login');
+      }
+
+      return;
+    }
     // 로그인했을때만 가능
     setLike((prev) => !prev);
+    fetchLikedPost({ content_id }).then((data) => console.log(data));
   };
 
   return (
@@ -54,29 +81,30 @@ export default function QuestionFooter({
           <span className='likeCount'>{like_count}</span>
         </div>
       </div>
-      {/* 작성자 토큰으로 보여줄 해결버튼 클릭 부분 */}
-      <div className={`solvedWrap ${solve ? 'solve' : 'problem'}`}>
-        <div className='solvedStatus'>
-          <div className='left'>
-            {solve ? (
-              <div className='solvedTitle'>해결된 질문이에요!</div>
-            ) : (
-              <>
-                <div className='solvedTitle'>질문이 해결 되었나요?</div>
-                <div>해결되었다면 상태를 변경해주세요.</div>
-              </>
-            )}
-          </div>
-          <div className='right'>
-            <button
-              className={`solveButton ${solve ? 'solve' : 'problem'}`}
-              onClick={handleSolvedClick}
-            >
-              {solve ? 'problem' : 'solve'}
-            </button>
+      {nickname === nicknameCheck && (
+        <div className={`solvedWrap ${solve ? 'solve' : 'problem'}`}>
+          <div className='solvedStatus'>
+            <div className='left'>
+              {solve ? (
+                <div className='solvedTitle'>해결된 질문이에요!</div>
+              ) : (
+                <>
+                  <div className='solvedTitle'>질문이 해결 되었나요?</div>
+                  <div>해결되었다면 상태를 변경해주세요.</div>
+                </>
+              )}
+            </div>
+            <div className='right'>
+              <button
+                className={`solveButton ${solve ? 'solve' : 'problem'}`}
+                onClick={handleSolvedClick}
+              >
+                {solve ? 'problem' : 'solve'}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </QuestionFooterStyle>
   );
 }

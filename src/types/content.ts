@@ -9,6 +9,7 @@ export interface IPost {
   view: number;
   like_count: number;
   solved: number; // boolean
+  liked: number; // boolean
 }
 
 export interface IComments {
@@ -20,13 +21,7 @@ export interface IComments {
   updated_at: string | null;
 }
 
-export interface IStatus {
-  scrapped: number; // boolean
-  liked: number; // boolean
-}
-
 export interface IContent {
   post: IPost[];
-  status?: IStatus[];
   comments: IComments[];
 }

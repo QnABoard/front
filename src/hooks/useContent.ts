@@ -1,5 +1,5 @@
 import { fetchContent, FetchContentParams } from '@/apis/content.api';
-import { IContent, IPost, IStatus } from '@/types/content';
+import { IContent, IPost } from '@/types/content';
 import { useEffect, useState } from 'react';
 
 export const useContent = ({ content_id }: FetchContentParams) => {
@@ -19,9 +19,5 @@ export const useContent = ({ content_id }: FetchContentParams) => {
   }, [content_id]);
 
   const post: IPost | undefined = content?.post ? content?.post[0] : undefined;
-  const tokenStatus: IStatus | undefined = content?.status
-    ? content.status[0]
-    : undefined;
-
-  return { post, tokenStatus };
+  return { post };
 };

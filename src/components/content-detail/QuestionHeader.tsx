@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { EllipsisVerticalIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/rootReducer';
 
 interface Props {
   title: string;
@@ -23,9 +25,10 @@ export default function QuestionHeader({
   content_id,
 }: Props) {
   const navigate = useNavigate();
-  /**
-   * 작성자 토큰
-   */
+  const nicknameCheck = useSelector(
+    (state: RootState) => state.user.userInfo?.nickname
+  );
+
   const [dropDown, setDropDown] = useState(false);
 
   const handleDropDownClick = () => {
@@ -52,21 +55,21 @@ export default function QuestionHeader({
           </div>
           <div className='views'>{view}</div>
         </div>
-        {/* 작성자 토큰으로 보여줄 수정.삭제버튼 */}
-        {/* ref로 관리하여 바깥 클릭시 드롭다운 없어지게 */}
-        <div className='dropDownWrap'>
-          <div className='dropDownIcon' onClick={handleDropDownClick}>
-            <EllipsisVerticalIcon />
-          </div>
-          {dropDown && (
-            <div className='dropDown'>
-              <ul>
-                <li onClick={handleContentUpdateClick}>수정하기</li>
-                <li>삭제하기</li>
-              </ul>
+        {nickname === nicknameCheck && (
+          <div className='dropDownWrap'>
+            <div className='dropDownIcon' onClick={handleDropDownClick}>
+              <EllipsisVerticalIcon />
             </div>
-          )}
-        </div>
+            {dropDown && (
+              <div className='dropDown'>
+                <ul>
+                  <li onClick={handleContentUpdateClick}>수정하기</li>
+                  <li>삭제하기</li>
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </QuestionHeaderStyle>
   );
