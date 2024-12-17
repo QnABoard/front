@@ -1,5 +1,5 @@
-import httpClient from '@/apis/http.api';
-import { mainData } from '@/model/main.model';
+import { httpClient } from './http.api';
+import { mainData } from '@/types/main.model';
 
 export const fetchMainData = async () => {
   const response = await httpClient.get<mainData>('/api/main');
@@ -8,4 +8,4 @@ export const fetchMainData = async () => {
   } catch {
     throw Error;
   }
-}
+};

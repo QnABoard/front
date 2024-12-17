@@ -2,10 +2,11 @@ import styled from 'styled-components';
 
 const UserContainer = styled.div`
   font-family: 'Pretendard-ExtraLight', Helvetica;
-  font-size: 10px;
+  font-size: 12px;
   color: #666;
   display: flex;
   gap: 8px;
+  margin-left: 5px;
 `;
 
 interface QuestionUserProps {

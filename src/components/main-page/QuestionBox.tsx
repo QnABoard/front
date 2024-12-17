@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import QuestionBody from './QuestionBody';
-import QuestionHeader from './QuestionHeader';
-import QuestionTag from './QuesitonTag';
-import QuestionBottom from './QuestionBottom';
-import { fetchPosts } from '@/apis/mainpost.api';
-import { PostData } from '@/types/postdata';
+import QuestionBody from '../ui/molecules/mainpage-molecule/QuestionBody';
+import QuestionHeader from '../ui/molecules/mainpage-molecule/QuestionHeader';
+import QuestionTag from '../ui/atoms/mainpage-atom/QuesitonTag';
+import QuestionBottom from '../ui/molecules/mainpage-molecule/QuestionBottom';
+import { fetchMainData } from '@/apis/maindata.api';
+import { mainPosts } from '@/types/main.model';
 
 const QuestionBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  margin-top: 30px;
+  gap: 30px;
 `;
 
 const QuestionItem = styled.div`
@@ -18,15 +19,15 @@ const QuestionItem = styled.div`
 `;
 
 function QuestionBox() {
-  const [posts, setPosts] = useState<PostData[]>([]);
+  const [posts, setPosts] = useState<mainPosts[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        const data = await fetchPosts();
-        setPosts(data);
+        const data = await fetchMainData();
+        setPosts(data.posts);
       } catch (err) {
         setError('데이터를 불러오는 중 오류가 발생했습니다.');
       } finally {

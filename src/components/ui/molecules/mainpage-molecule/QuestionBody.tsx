@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 const BodyContainer = styled.div`
-  font-family: 'Pretendard-ExtraLight', Helvetica;
-  font-size: 10px;
+  font-family: 'Pretendard-Light', Helvetica;
+  font-size: 15px;
+  margin-left: 5px;
   line-height: 1.5;
   color: #333;
-  margin-top: 8px;
+  margin-top: 20px;
+  margin-right: 5px;
 `;
 
 interface QuestionBodyProps {

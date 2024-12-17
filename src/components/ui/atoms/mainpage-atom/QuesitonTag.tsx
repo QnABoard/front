@@ -11,9 +11,9 @@ const TagsContainer = styled.div`
 const TagItem = styled.div`
   background-color: #deffe2;
   color: #858585;
-  font-family: 'Pretendard-ExtraLight', Helvetica;
-  font-size: 8px;
-  padding: 4px 8px;
+  font-family: 'Pretendard-Light', Helvetica;
+  font-size: 12px;
+  padding: 8px 16px;
   border-radius: 12px;
 `;
 

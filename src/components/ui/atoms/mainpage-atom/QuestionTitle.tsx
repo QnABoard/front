@@ -2,9 +2,10 @@ import styled from 'styled-components';
 
 const TitleContainer = styled.div`
   font-family: 'Pretendard-SemiBold', Helvetica;
-  font-size: 10px;
+  font-size: 18px;
   color: #000;
-  margin-left: 8px;
+  margin-top: 5px;
+  margin-left: 30px;
 `;
 
 interface TitleProps {

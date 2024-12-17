@@ -8,7 +8,7 @@ import { RootState } from '@/store/rootReducer';
 import { loginAsync } from '@/hooks/userSlice';
 import { AppDispatch } from '@/store/store';
 
-type LoginFormData = {
+export type LoginFormData = {
   email: string;
   password: string;
 };

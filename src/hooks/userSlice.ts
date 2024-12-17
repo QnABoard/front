@@ -85,6 +85,10 @@ const userSlice = createSlice({
         state.userInfo = userInfo;
         state.loading = false;
         state.error = null;
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', action.payload);
+        }
       })
       .addCase(loginAsync.rejected, (state, action) => {
         state.loading = false;
