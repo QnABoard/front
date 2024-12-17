@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 
 interface Props {
   title: string;
+  nickname: string;
   created_at: string;
   updated_at: string;
   solve: boolean | undefined;
@@ -14,6 +15,7 @@ interface Props {
 
 export default function QuestionHeader({
   title,
+  nickname,
   created_at,
   updated_at,
   solve,
@@ -39,6 +41,7 @@ export default function QuestionHeader({
       <div className='title'>{title}</div>
       <div className='panel'>
         <div className='solved'>{solve ? 'solve' : 'problem'}</div>
+        <div className='nickname'>{nickname}</div>
         <div className='questionCreatedAt'>{created_at} 작성</div>
         {updated_at && (
           <div className='questionUpdatedAt'>{updated_at} 수정</div>
