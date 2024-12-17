@@ -14,6 +14,7 @@ const MenuButton = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const role = useSelector((state: RootState) => state.user.userInfo?.role);
 
   const handleLogin = () => {
     // 로그인 페이지로 이동
@@ -22,6 +23,10 @@ const MenuButton = () => {
 
   const handleMyPage = () => {
     navigate('/mypage');
+  };
+
+  const handleAdminPage = () => {
+    navigate('/adminpage');
   };
 
   const handleLogout = () => {
@@ -56,7 +61,17 @@ const MenuButton = () => {
       {isOpen && (
         <DropdownMenu>
           <ul>
-            <li onClick={isLoggedIn ? () => {} : handleLogin}>
+            <li
+              onClick={() => {
+                if (isLoggedIn) {
+                  role === 'admin'
+                    ? navigate('/adminpage')
+                    : navigate('/mypage');
+                } else {
+                  handleLogin();
+                }
+              }}
+            >
               {/* 아바타 표시 */}
               <AvatarContainer>
                 <Avatar
@@ -74,7 +89,11 @@ const MenuButton = () => {
             </li>
             {isLoggedIn ? (
               <>
-                <li onClick={handleMyPage}>마이페이지</li>
+                {role === 'admin' ? (
+                  <li onClick={handleAdminPage}>관리자페이지</li>
+                ) : (
+                  <li onClick={handleMyPage}>마이페이지</li>
+                )}
                 <li>문의하기</li>
                 <li>서비스 소개</li>
                 <li onClick={handleLogout}>로그아웃</li>
