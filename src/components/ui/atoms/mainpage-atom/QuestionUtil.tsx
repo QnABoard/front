@@ -1,19 +1,18 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import {
   ChatBubbleOvalLeftEllipsisIcon,
   EyeIcon,
 } from '@heroicons/react/24/outline';
 import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid';
-import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline';
 
 // Styled Components
 const UtilContainer = styled.div`
   display: flex;
   gap: 12px;
   font-family: 'Pretendard-ExtraLight', Helvetica;
-  font-size: 10px;
+  font-size: 13px;
   color: #666;
+  margin-right: 5px;
 `;
 
 const IconWrapper = styled.span`
@@ -36,23 +35,11 @@ interface QuestionUtilProps {
 }
 
 function QuestionUtil({ likes, comments, views }: QuestionUtilProps) {
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes);
-
-  const toggleLike = () => {
-    setIsLiked(!isLiked);
-    setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
-  };
-
   return (
     <UtilContainer>
-      <IconWrapper onClick={toggleLike}>
-        {isLiked ? (
-          <SolidHeartIcon color='#e53e3e' />
-        ) : (
-          <OutlineHeartIcon color='#666' />
-        )}
-        <span>{likeCount}</span>
+      <IconWrapper>
+        <SolidHeartIcon color='#f8a7a7' />
+        <span>{likes}</span>
       </IconWrapper>
       <IconWrapper>
         <ChatBubbleOvalLeftEllipsisIcon color='#666' />

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import QuestionButton from './QuestionButton';
-import QuestionTitle from './QuestionTitle';
+import QuestionButton from '../../atoms/mainpage-atom/QuestionButton';
+import QuestionTitle from '../../atoms/mainpage-atom/QuestionTitle';
 
 const HeaderContainer = styled.div`
   display: flex;

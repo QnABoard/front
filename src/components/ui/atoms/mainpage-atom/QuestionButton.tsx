@@ -14,18 +14,17 @@ const ProblemBox = styled.div`
   .overlap-group {
     background-color: #d9d9d9;
     border-radius: 30px;
-    height: 20px;
+    height: 30px;
     position: relative;
-    width: 77px;
+    width: 100px;
   }
 
   .text-wrapper {
     color: #ffffff;
     font-family: 'Pretendard-ExtraBold', Helvetica;
-    font-size: 10px;
-    height: 13px;
-    left: 13px;
-    line-height: 12px;
+    font-size: 15px;
+    left: 20px;
+    line-height: 20px;
     position: absolute;
     text-align: center;
     top: 3px;
@@ -48,18 +47,17 @@ const SolveBox = styled.div`
   .overlap-group {
     background-color: #c9ffce;
     border-radius: 30px;
-    height: 20px;
+    height: 30px;
     position: relative;
-    width: 77px;
+    width: 100px;
   }
 
   .text-wrapper {
     color: #007c0c;
     font-family: 'Pretendard-ExtraBold', Helvetica;
-    font-size: 10px;
-    height: 13px;
-    left: 13px;
-    line-height: 12px;
+    font-size: 15px;
+    left: 25px;
+    line-height: 20px;
     position: absolute;
     text-align: center;
     top: 4px;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import QuestionUser from './QuestionUser';
-import QuestionUtil from './QuestionUtil';
+import QuestionUser from '../../atoms/mainpage-atom/QuestionUser';
+import QuestionUtil from '../../atoms/mainpage-atom/QuestionUtil';
 
 const BottomContainer = styled.div`
   display: flex;

@@ -1,21 +1,13 @@
 import styled from 'styled-components';
 import logo from '@/assets/logo.svg';
-import Avatar from './ui/atoms/Avator';
-import AuthButton from './AuthButton';
+import MenuButton from './MenuButton';
 
 const Header = () => (
   <HeaderContainer>
     <HeaderWrapper>
       <img src={logo} alt='Logo' />
-      <div>
-        <Avatar
-          src='https://jmagazine.joins.com/_data2/photo/2021/04/838745483_D5lXOQuU_5.jpg'
-          size='small'
-          alt='User Avatar'
-        />
-      </div>
     </HeaderWrapper>
-    <AuthButton />
+    <MenuButton />
   </HeaderContainer>
 );
 

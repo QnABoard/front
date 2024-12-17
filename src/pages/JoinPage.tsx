@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import qublogo from '@/assets/qublogo.svg';
 import { join } from '@/apis/auth.api';
-import PasswordGuideLines from '@/components/ui/atoms/PasswordGuideLines';
+import PasswordGuideLines from '@/components/ui/atoms/join-atom/PasswordGuideLines';
 import Input from '@/components/ui/atoms/Input';
 
 export interface JoinProps {
