@@ -16,25 +16,25 @@ const MenuButton = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const role = useSelector((state: RootState) => state.user.userInfo?.role);
 
-  const handleLogin = () => {
-    // 로그인 페이지로 이동
-    navigate('/login');
-  };
-
   const handleMyPage = () => {
+    setIsOpen(false); // 드롭다운 먼저 닫기
     navigate('/mypage');
   };
 
   const handleAdminPage = () => {
+    setIsOpen(false); // 드롭다운 먼저 닫기
     navigate('/adminpage');
   };
 
+  const handleLogin = () => {
+    setIsOpen(false); // 드롭다운 먼저 닫기
+    navigate('/login');
+  };
+
   const handleLogout = () => {
-    // Redux 상태 초기화
     dispatch(logout());
-    // 토큰 제거
     removeToken();
-    // 로그아웃 후 메인 페이지 이동(필요하다면)
+    setIsOpen(false);
     navigate('/');
   };
 
@@ -63,6 +63,7 @@ const MenuButton = () => {
           <ul>
             <li
               onClick={() => {
+                setIsOpen(false); // 드롭다운 먼저 닫기
                 if (isLoggedIn) {
                   role === 'admin'
                     ? navigate('/adminpage')
