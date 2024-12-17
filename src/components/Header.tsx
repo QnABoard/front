@@ -1,15 +1,24 @@
 import styled from 'styled-components';
 import logo from '@/assets/logo.svg';
 import MenuButton from './MenuButton';
+import { useNavigate } from 'react-router';
 
-const Header = () => (
-  <HeaderContainer>
-    <HeaderWrapper>
-      <img src={logo} alt='Logo' />
-    </HeaderWrapper>
-    <MenuButton />
-  </HeaderContainer>
-);
+const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate('/'); // 메인 페이지로 이동
+  };
+
+  return (
+    <HeaderContainer>
+      <HeaderWrapper>
+        <Logo src={logo} alt='Logo' onClick={handleLogoClick} />
+        <MenuButton />
+      </HeaderWrapper>
+    </HeaderContainer>
+  );
+};
 
 export default Header;
 
@@ -27,4 +36,9 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+// 클릭 가능한 스타일을 추가한 로고
+const Logo = styled.img`
+  cursor: pointer; // 커서를 클릭 가능한 손가락 모양으로 변경
 `;
