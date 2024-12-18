@@ -7,7 +7,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    navigate('/'); // 메인 페이지로 이동
+    navigate('/');
   };
 
   return (
@@ -38,7 +38,6 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
 `;
 
-// 클릭 가능한 스타일을 추가한 로고
 const Logo = styled.img`
-  cursor: pointer; // 커서를 클릭 가능한 손가락 모양으로 변경
+  cursor: pointer;
 `;
