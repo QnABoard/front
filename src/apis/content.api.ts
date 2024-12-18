@@ -29,3 +29,11 @@ export const fetchLikedPost = async ({ content_id }: FetchContentParams) => {
     console.log('에러났어', e);
   }
 };
+
+export const fetchSolved = async ({ content_id }: FetchContentParams) => {
+  try {
+    return requestHandler<void>('post', `api/posts/${content_id}/solved`);
+  } catch (e) {
+    console.log('에러났어', e);
+  }
+};

@@ -22,7 +22,7 @@ export default function QuestionFooter({ solve, handleSolvedClick }: Props) {
   /**
    * 헤더 토큰 데이터 통신으로 받아와야 함
    */
-  const [tagItems, setTagItems] = useState('TypeScript,NodeJS,React');
+  const tagItems = 'TypeScript,NodeJS,React';
   const [like, setLike] = useState<boolean>(false);
   useEffect(() => {
     setLike(!!post?.liked);

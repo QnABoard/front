@@ -35,7 +35,6 @@ export const useLiked = () => {
       });
     },
     onSuccess: () => {
-      // 성공 시 캐시 무효화
       queryClient.invalidateQueries({
         queryKey: ['content', content_id],
       });

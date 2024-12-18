@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface Props {
-  content: string;
+  content: string | undefined;
 }
 
 export default function QuestionContent({ content }: Props) {
