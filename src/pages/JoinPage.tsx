@@ -25,18 +25,18 @@ function JoinPage() {
     watch,
   } = useForm<JoinProps>();
 
-  const password = watch('password'); // PasswordGuideLines에서 실시간 사용
+  const password = watch('password');
 
   const onSubmit = async (data: JoinProps) => {
     setIsLoading(true);
     try {
-      await join(data); // 회원가입 요청
+      await join(data);
       alert('회원가입이 완료되었습니다!');
-      navigate('/login'); // 로그인 페이지로 이동
+      navigate('/login');
     } catch (error: any) {
       console.error('회원가입 중 에러 발생:', error);
       if (error.response?.data?.message) {
-        alert(error.response.data.message); // 서버에서 반환된 에러 메시지 표시
+        alert(error.response.data.message);
       } else {
         alert('회원가입에 실패했습니다. 다시 시도해주세요.');
       }

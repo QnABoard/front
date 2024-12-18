@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 import { logout } from '@/hooks/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/rootReducer';
-import { removeToken } from '@/apis/http.api';
+import { removeToken } from '@/utils/token';
 
 const MenuButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,17 +17,17 @@ const MenuButton = () => {
   const role = useSelector((state: RootState) => state.user.userInfo?.role);
 
   const handleMyPage = () => {
-    setIsOpen(false); // 드롭다운 먼저 닫기
+    setIsOpen(false);
     navigate('/mypage');
   };
 
   const handleAdminPage = () => {
-    setIsOpen(false); // 드롭다운 먼저 닫기
+    setIsOpen(false);
     navigate('/adminpage');
   };
 
   const handleLogin = () => {
-    setIsOpen(false); // 드롭다운 먼저 닫기
+    setIsOpen(false);
     navigate('/login');
   };
 
@@ -48,7 +48,6 @@ const MenuButton = () => {
 
   return (
     <DropdownContainer>
-      {/* 햄버거 버튼 */}
       <Button onClick={toggleMenu}>
         {isOpen ? (
           <XMarkIcon className='icon' />
@@ -57,13 +56,12 @@ const MenuButton = () => {
         )}
       </Button>
 
-      {/* 드롭다운 메뉴 */}
       {isOpen && (
         <DropdownMenu>
           <ul>
             <li
               onClick={() => {
-                setIsOpen(false); // 드롭다운 먼저 닫기
+                setIsOpen(false);
                 if (isLoggedIn) {
                   role === 'admin'
                     ? navigate('/adminpage')
@@ -73,7 +71,6 @@ const MenuButton = () => {
                 }
               }}
             >
-              {/* 아바타 표시 */}
               <AvatarContainer>
                 <Avatar
                   src={

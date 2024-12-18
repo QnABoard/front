@@ -3,6 +3,7 @@ import { DecodedToken, UserInfo, UserState } from '@/types/auth';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { BASE_URL } from '@/apis/http.api';
 
 const initialState: UserState = {
   isLoggedIn: false,
@@ -12,7 +13,6 @@ const initialState: UserState = {
   error: null,
 };
 
-// 실제 서버에 로그인 요청을 보내고 토큰을 받아오는 thunk
 export const loginAsync = createAsyncThunk(
   'user/loginAsync',
   async (
@@ -20,13 +20,10 @@ export const loginAsync = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post(
-        'http://localhost:3333/api/users/login',
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/api/users/login`, {
+        email,
+        password,
+      });
 
       if (response.data.success && response.data.token) {
         return response.data.token;
