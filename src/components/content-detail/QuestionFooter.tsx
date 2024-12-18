@@ -1,32 +1,21 @@
 import { useLiked } from '@/hooks/useLiked';
-import { RootState } from '@/store/rootReducer';
 import { HeartIcon } from '@heroicons/react/24/outline';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 interface Props {
   solve: boolean | undefined;
+  nicknameCheck: string | undefined;
   handleSolvedClick(): void;
 }
 
-export default function QuestionFooter({ solve, handleSolvedClick }: Props) {
-  const nicknameCheck = useSelector(
-    (state: RootState) => state.user.userInfo?.nickname
-  );
+export default function QuestionFooter({
+  solve,
+  nicknameCheck,
+  handleSolvedClick,
+}: Props) {
+  const { like, post, handleHeartClick } = useLiked();
 
-  const { post, handleHeartClick } = useLiked();
-
-  // const { likeCheck } = useLiked(liked, content_id);
-
-  /**
-   * 헤더 토큰 데이터 통신으로 받아와야 함
-   */
   const tagItems = 'TypeScript,NodeJS,React';
-  const [like, setLike] = useState<boolean>(false);
-  useEffect(() => {
-    setLike(!!post?.liked);
-  }, [post?.liked]);
 
   return (
     <QuestionFooterStyle>

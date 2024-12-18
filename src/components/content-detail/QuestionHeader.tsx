@@ -2,19 +2,16 @@ import styled from 'styled-components';
 import { EllipsisVerticalIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store/rootReducer';
 import { useContent } from '@/hooks/useContent';
+import { fetchContentDelete } from '@/apis/content.api';
 
 interface Props {
   solve: boolean | undefined;
+  nicknameCheck: string | undefined;
 }
 
-export default function QuestionHeader({ solve }: Props) {
+export default function QuestionHeader({ solve, nicknameCheck }: Props) {
   const navigate = useNavigate();
-  const nicknameCheck = useSelector(
-    (state: RootState) => state.user.userInfo?.nickname
-  );
   const { content_id } = useParams();
   const { posts } = useContent({ content_id });
 
@@ -26,6 +23,11 @@ export default function QuestionHeader({ solve }: Props) {
 
   const handleContentUpdateClick = () => {
     navigate(`/posts/${content_id}/edit`);
+  };
+
+  const handleContentDeleteClick = async () => {
+    await fetchContentDelete({ content_id });
+    navigate('/');
   };
 
   return (
@@ -53,7 +55,7 @@ export default function QuestionHeader({ solve }: Props) {
               <div className='dropDown'>
                 <ul>
                   <li onClick={handleContentUpdateClick}>수정하기</li>
-                  <li>삭제하기</li>
+                  <li onClick={handleContentDeleteClick}>삭제하기</li>
                 </ul>
               </div>
             )}

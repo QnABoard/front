@@ -8,6 +8,6 @@ export const useContent = ({ content_id }: FetchContentParams) => {
     queryFn: async () => await fetchContent({ content_id }),
     enabled: !!content_id,
   });
-  const posts: IPost | undefined = data?.post[0];
+  const posts: IPost | undefined = data ? data?.post[0] : undefined;
   return { posts };
 };

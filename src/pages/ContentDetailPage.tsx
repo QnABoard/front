@@ -4,20 +4,28 @@ import QuestionFooter from '@/components/content-detail/QuestionFooter';
 import QuestionHeader from '@/components/content-detail/QuestionHeader';
 import QuestionComment from '@/components/content-detail/QuestionComment';
 import { useSolved } from '@/hooks/useSolved';
+import { useNavigate } from 'react-router';
+import { useContent } from '@/hooks/useContent';
 export default function ContentDetailPage() {
-  const { post, handleSolvedClick } = useSolved();
+  const navigate = useNavigate();
+  const { content_id, nicknameCheck, post, handleSolvedClick } = useSolved();
+  const { posts } = useContent({ content_id });
 
-  /**
-   * 작성자 헤더 토큰 데이터 통신해서 받아와야함
-   */
+  // 존재하지 않는 페이지일때의 처리
+  if (!posts) {
+    alert('존재하지 않는 페이지 입니다.');
+    navigate('/');
+    return;
+  }
 
   return (
     <ContentDetailPageStyle>
-      <QuestionHeader solve={!!post?.solved} />
+      <QuestionHeader solve={!!post?.solved} nicknameCheck={nicknameCheck} />
       <QuestionContent content={post?.content} />
       <QuestionFooter
         handleSolvedClick={handleSolvedClick}
         solve={!!post?.solved}
+        nicknameCheck={nicknameCheck}
       />
       <div className='border'></div>
       <QuestionComment />

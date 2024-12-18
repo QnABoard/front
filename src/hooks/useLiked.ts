@@ -15,6 +15,11 @@ export const useLiked = () => {
   const { content_id } = useParams();
   const { posts } = useContent({ content_id });
   const [post, setPost] = useState<IPost>();
+  const [like, setLike] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLike(!!post?.liked);
+  }, [post?.liked]);
 
   useEffect(() => {
     setPost(posts);
@@ -55,5 +60,5 @@ export const useLiked = () => {
     toggleLikeMutation.mutate({ content_id });
   };
 
-  return { post, handleHeartClick };
+  return { like, post, handleHeartClick };
 };

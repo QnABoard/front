@@ -5,15 +5,20 @@ import { useEffect, useState } from 'react';
 import { useContent } from './useContent';
 import { IPost } from '@/types/content';
 import { useParams } from 'react-router';
+import { RootState } from '@/store/rootReducer';
+import { useSelector } from 'react-redux';
 
 export const useSolved = () => {
   const { content_id } = useParams();
   const { posts } = useContent({ content_id });
   const queryClient = useQueryClient();
   const [post, setPost] = useState<IPost>();
+  const nicknameCheck = useSelector(
+    (state: RootState) => state.user.userInfo?.nickname
+  );
 
   useEffect(() => {
-    setPost(posts);
+    setPost(posts ? posts : undefined);
   }, [posts]);
 
   const toggleSolvedMutation = useMutation<
@@ -40,5 +45,5 @@ export const useSolved = () => {
     toggleSolvedMutation.mutate({ content_id });
   };
 
-  return { post, handleSolvedClick };
+  return { content_id, nicknameCheck, post, handleSolvedClick };
 };
