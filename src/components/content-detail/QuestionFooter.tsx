@@ -1,70 +1,37 @@
-import { fetchLikedPost } from '@/apis/content.api';
+import { useLiked } from '@/hooks/useLiked';
 import { RootState } from '@/store/rootReducer';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 interface Props {
-  tags: string;
-  nickname: string;
-  like_count: number;
-  liked: boolean;
   solve: boolean | undefined;
   handleSolvedClick(): void;
-  content_id: string;
 }
 
-export default function QuestionFooter({
-  tags,
-  nickname,
-  like_count,
-  liked,
-  handleSolvedClick,
-  solve,
-  content_id,
-}: Props) {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+export default function QuestionFooter({ solve, handleSolvedClick }: Props) {
   const nicknameCheck = useSelector(
     (state: RootState) => state.user.userInfo?.nickname
   );
-  console.log('liked', liked);
+
+  const { post, handleHeartClick } = useLiked();
+
+  // const { likeCheck } = useLiked(liked, content_id);
 
   /**
    * 헤더 토큰 데이터 통신으로 받아와야 함
    */
-  const [like, setLike] = useState<boolean>();
   const [tagItems, setTagItems] = useState('TypeScript,NodeJS,React');
-
+  const [like, setLike] = useState<boolean>(false);
   useEffect(() => {
-    // 유저 토큰값이 있을때 좋아요 할 수 있어야 함
-    setLike(liked);
-  }, [liked]);
-
-  const handleHeartClick = () => {
-    if (!isLoggedIn) {
-      const loginRequest = confirm(
-        '로그인 후 이용할 수 있는 기능입니다.\n로그인 하시겠습니까??'
-      );
-      if (loginRequest) {
-        navigate('/login', { state: { from: location.pathname } });
-      }
-
-      return;
-    }
-    // 로그인했을때만 가능
-    setLike((prev) => !prev);
-    fetchLikedPost({ content_id }).then((data) => console.log(data));
-  };
+    setLike(!!post?.liked);
+  }, [post?.liked]);
 
   return (
     <QuestionFooterStyle>
       <div className='tags'>
-        {/* tagItems -> tags로 바꾸기 */}
+        {/* tagItems -> post.tags로 바꾸기 */}
         {tagItems.split(',').map((tag) => (
           <div className='tag' key={tag}>
             {tag}
@@ -79,10 +46,10 @@ export default function QuestionFooter({
               className={`likeHeart ${like === true ? 'likeFill' : ''}`}
             />
           </span>
-          <span className='likeCount'>{like_count}</span>
+          <span className='likeCount'>{post?.like_count}</span>
         </div>
       </div>
-      {nickname === nicknameCheck && (
+      {post?.nickname === nicknameCheck && (
         <div className={`solvedWrap ${solve ? 'solve' : 'problem'}`}>
           <div className='solvedStatus'>
             <div className='left'>
@@ -121,11 +88,12 @@ const QuestionFooterStyle = styled.div`
     flex-wrap: wrap;
     gap: 10px;
     .tag {
-      width: fit-content;
-      background-color: #c9ffcf;
-      padding: 5px 7px;
-      border-radius: 30px;
-      color: #575757;
+      background-color: #deffe2;
+      color: #858585;
+      font-family: 'Pretendard-Light', Helvetica;
+      font-size: 12px;
+      padding: 8px 16px;
+      border-radius: 12px;
     }
   }
 

@@ -1,33 +1,22 @@
 import styled from 'styled-components';
 import { EllipsisVerticalIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/rootReducer';
+import { useContent } from '@/hooks/useContent';
 
 interface Props {
-  title: string;
-  nickname: string;
-  created_at: string;
-  updated_at: string;
   solve: boolean | undefined;
-  view: number;
-  content_id: string;
 }
 
-export default function QuestionHeader({
-  title,
-  nickname,
-  created_at,
-  updated_at,
-  solve,
-  view,
-  content_id,
-}: Props) {
+export default function QuestionHeader({ solve }: Props) {
   const navigate = useNavigate();
   const nicknameCheck = useSelector(
     (state: RootState) => state.user.userInfo?.nickname
   );
+  const { content_id } = useParams();
+  const { posts } = useContent({ content_id });
 
   const [dropDown, setDropDown] = useState(false);
 
@@ -41,21 +30,21 @@ export default function QuestionHeader({
 
   return (
     <QuestionHeaderStyle>
-      <div className='title'>{title}</div>
+      <div className='title'>{posts?.title}</div>
       <div className='panel'>
         <div className='solved'>{solve ? 'solve' : 'problem'}</div>
-        <div className='nickname'>{nickname}</div>
-        <div className='questionCreatedAt'>{created_at} 작성</div>
-        {updated_at && (
-          <div className='questionUpdatedAt'>{updated_at} 수정</div>
+        <div className='nickname'>{posts?.nickname}</div>
+        <div className='questionCreatedAt'>{posts?.created_at} 작성</div>
+        {posts?.updated_at && (
+          <div className='questionUpdatedAt'>{posts?.updated_at} 수정</div>
         )}
         <div className='viewsWrap'>
           <div className='viewIcon'>
             <EyeIcon />
           </div>
-          <div className='views'>{view}</div>
+          <div className='views'>{posts?.view}</div>
         </div>
-        {nickname === nicknameCheck && (
+        {posts?.nickname === nicknameCheck && (
           <div className='dropDownWrap'>
             <div className='dropDownIcon' onClick={handleDropDownClick}>
               <EllipsisVerticalIcon />
