@@ -18,7 +18,6 @@ const queryClient = new QueryClient({
 
 const App = () => {
   const appRouter = createBrowserRouter(router);
-  const [value, setValue] = useState('');
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -32,7 +31,3 @@ const App = () => {
 };
 
 export default App;
-
-const TestDiv = styled.div`
-  width: 600px;
-`;

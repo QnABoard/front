@@ -8,6 +8,7 @@ import JoinPage from '@/pages/JoinPage';
 import LoginPage from '@/pages/LoginPage';
 import MyPage from '@/pages/MyPage';
 import ProtectedRoute from '@/admin/AdminRoute';
+import BoardWritePage from '@/pages/BoardWritePage';
 
 const router = [
   {
@@ -35,6 +36,10 @@ const router = [
             element: <Scraps />,
           },
         ],
+      },
+      {
+        path: '/boardwrite',
+        element: <BoardWritePage />,
       },
       {
         path: '/adminpage',
