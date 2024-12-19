@@ -3,10 +3,10 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { getToken, removeToken } from '@/utils/token';
 
 export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const DEFAULT_TIMEOUT = 30000; // 요청 제한 시간
+const DEFAULT_TIMEOUT = 30000;
 
 export const createClient = (config?: AxiosRequestConfig) => {
-  const token = getToken(); // 토큰 가져오기
+  const token = getToken();
   const axiosInstance = axios.create({
     baseURL: BASE_URL,
     timeout: DEFAULT_TIMEOUT,
