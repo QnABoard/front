@@ -1,4 +1,3 @@
-// userSlice.ts
 import { DecodedToken, UserInfo, UserState } from '@/types/auth';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -42,18 +41,6 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loginSuccess: (
-      state,
-      action: PayloadAction<{ token: string; userInfo: UserInfo }>
-    ) => {
-      state.isLoggedIn = true;
-      state.token = action.payload.token;
-      state.userInfo = action.payload.userInfo;
-      state.loading = false;
-      state.error = null;
-
-      localStorage.setItem('token', action.payload.token);
-    },
     logout: (state) => {
       state.isLoggedIn = false;
       state.token = null;
@@ -94,5 +81,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logout } = userSlice.actions;
+export const { logout } = userSlice.actions;
 export default userSlice.reducer;
