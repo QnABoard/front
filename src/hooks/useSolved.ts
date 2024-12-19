@@ -18,7 +18,7 @@ export const useSolved = () => {
   );
 
   useEffect(() => {
-    setPost(posts ? posts : undefined);
+    setPost(posts);
   }, [posts]);
 
   const toggleSolvedMutation = useMutation<

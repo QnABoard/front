@@ -48,14 +48,9 @@ const dummy = {
       view: 0,
       solved: 0,
       nickname: '유저1',
-      like_count: 0,
-      tags: null,
-    },
-  ],
-  status: [
-    {
-      scrapped: 0,
       liked: 0,
+      like_count: 0,
+      tags: 'javascript,NodeJS,React',
     },
   ],
   comments: [
