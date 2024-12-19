@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface ButtonProps {
-  variant?: 'primary' | 'outline';
+  variant?: 'primary' | 'outline' | 'tag';
   disabled?: boolean;
 }
 
@@ -18,11 +18,16 @@ const styles = {
   primary: `
     background-color: mediumseagreen;
     color: white;
-    border: none;
-
-    &:hover {
-      background-color: seagreen;
-    }
+    border: black;
+    height: 30px;
+    padding: 5px;
+  `,
+  tag: `
+    background-color: white;
+    border: 1px solid mediumseagreen;
+    height: 30px;
+    padding: 5px;
+    color: mediumseagreen;
   `,
   outline: `
     background-color: white;
@@ -47,6 +52,7 @@ const Button = styled.button<ButtonProps>`
       styles.base,
       variant === 'primary' && styles.primary,
       variant === 'outline' && styles.outline,
+      variant === 'tag' && styles.tag,
       disabled && styles.disabled
     )}
 `;
