@@ -19,11 +19,11 @@ const SearchInputStyle = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 8px 20px;
+  margin-bottom: 18px;
+  padding: 8px 15px;
   border: 1px solid #727272;
   border-radius: 30px;
-  width: 70%;
+  width: 80%;
 
   input {
     width: 95%;
