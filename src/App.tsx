@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router';
 import router from '@/routes/router';
-import QuillEditor from './components/ui/molecules/QuillEditor';
-import { useState } from 'react';
-import styled from 'styled-components';
+import { Provider } from 'react-redux'; // Redux Provider 임포트
+import GlobalStyle from './styles/GlobalStyle';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './store/store';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,12 +20,14 @@ const App = () => {
   const appRouter = createBrowserRouter(router);
   const [value, setValue] = useState('');
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={appRouter} />
-      <TestDiv>
-        <QuillEditor value={value} setValue={setValue} />
-      </TestDiv>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <GlobalStyle />
+          <RouterProvider router={appRouter} />
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>
   );
 };
 
