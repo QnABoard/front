@@ -20,6 +20,10 @@ const router = [
         element: <HomePage />,
       },
       {
+        path: '/boardwrite',
+        element: <BoardWritePage />,
+      },
+      {
         path: '/mypage',
         element: <MyPage />,
         children: [
@@ -36,10 +40,6 @@ const router = [
             element: <Scraps />,
           },
         ],
-      },
-      {
-        path: '/boardwrite',
-        element: <BoardWritePage />,
       },
       {
         path: '/adminpage',

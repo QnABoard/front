@@ -1,20 +1,21 @@
+import React, { useRef } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-interface QuillEditorProps {
+interface RichTextEditorProps {
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (value: string) => void;
 }
 
-const QuillEditor = ({ value, setValue }: QuillEditorProps) => {
-  console.log(value);
+const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
+  const quillRef = useRef<ReactQuill | null>(null); // React ref 사용
+
   const modules = {
     toolbar: [
-      [{ header: [1, 2, 3, false] }],
+      [{ header: [1, 2, false] }],
       ['bold', 'italic', 'underline', 'strike'],
       [{ list: 'ordered' }, { list: 'bullet' }],
-      ['link', 'image', 'code'],
-      ['clean'],
+      ['code-block'],
     ],
   };
 
@@ -26,19 +27,19 @@ const QuillEditor = ({ value, setValue }: QuillEditorProps) => {
     'strike',
     'list',
     'bullet',
-    'link',
-    'code',
-    'image',
+    'code-block',
   ];
 
   return (
     <ReactQuill
-      theme='snow'
-      onChange={setValue}
+      ref={quillRef} // ref를 설정
+      value={value}
+      onChange={onChange}
       modules={modules}
       formats={formats}
+      theme='snow'
     />
   );
 };
 
-export default QuillEditor;
+export default RichTextEditor;
