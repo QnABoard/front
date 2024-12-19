@@ -1,7 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router';
 import router from '@/routes/router';
+import { Provider } from 'react-redux'; // Redux Provider 임포트
 import GlobalStyle from './styles/GlobalStyle';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './store/store';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,10 +19,14 @@ const queryClient = new QueryClient({
 const App = () => {
   const appRouter = createBrowserRouter(router);
   return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalStyle />
-      <RouterProvider router={appRouter} />
-    </QueryClientProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <GlobalStyle />
+          <RouterProvider router={appRouter} />
+        </QueryClientProvider>
+      </PersistGate>
+    </Provider>
   );
 };
 

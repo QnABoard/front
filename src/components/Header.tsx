@@ -1,21 +1,24 @@
 import styled from 'styled-components';
 import logo from '@/assets/logo.svg';
-import Avatar from './ui/atoms/Avator';
+import MenuButton from './MenuButton';
+import { useNavigate } from 'react-router';
 
-const Header = () => (
-  <HeaderContainer>
-    <HeaderWrapper>
-      <img src={logo} alt='Logo' />
-      <div>
-        <Avatar
-          src='https://jmagazine.joins.com/_data2/photo/2021/04/838745483_D5lXOQuU_5.jpg'
-          size='small'
-          alt='User Avatar'
-        />
-      </div>
-    </HeaderWrapper>
-  </HeaderContainer>
-);
+const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
+  return (
+    <HeaderContainer>
+      <HeaderWrapper>
+        <Logo src={logo} alt='Logo' onClick={handleLogoClick} />
+        <MenuButton />
+      </HeaderWrapper>
+    </HeaderContainer>
+  );
+};
 
 export default Header;
 
@@ -33,4 +36,8 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const Logo = styled.img`
+  cursor: pointer;
 `;
