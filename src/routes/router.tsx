@@ -8,6 +8,8 @@ import JoinPage from '@/pages/JoinPage';
 import LoginPage from '@/pages/LoginPage';
 import MyPage from '@/pages/MyPage';
 import ProtectedRoute from '@/admin/AdminRoute';
+import BoardWritePage from '@/pages/BoardWritePage';
+import BoardModificationPage from '@/pages/BoardModificationPage';
 
 const router = [
   {
@@ -17,6 +19,14 @@ const router = [
       {
         path: '/',
         element: <HomePage />,
+      },
+      {
+        path: '/boardwrite',
+        element: <BoardWritePage />,
+      },
+      {
+        path: '/boardModification',
+        element: <BoardModificationPage />,
       },
       {
         path: '/mypage',

@@ -1,8 +1,39 @@
+import { useEffect, useState } from 'react';
 import Avatar from '@/components/ui/atoms/Avator';
-import { Outlet } from 'react-router';
+import { useSelector } from 'react-redux';
+import { Link, Outlet, useLocation } from 'react-router';
 import styled from 'styled-components';
+import { RootState } from '@/store/rootReducer';
+import { fetchUserInfo, UserData } from '@/apis/user-info.api';
 
 const MyPage = () => {
+  const location = useLocation();
+  const nickname = useSelector(
+    (state: RootState) => state.user.userInfo?.nickname
+  );
+
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (nickname) {
+      setLoading(true);
+      fetchUserInfo(nickname)
+        .then((data) => {
+          setUserData(data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('에러 발생:', error);
+          setLoading(false);
+        });
+    }
+  }, [nickname]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <MyPageContainer>
       <UserProfileSection>
@@ -12,8 +43,31 @@ const MyPage = () => {
             size='big'
             alt='User Avatar'
           />
-          <UserName>땡땡땡님</UserName>
+          <UserName>{userData?.profile.nickname}님</UserName>
         </AvatarContainer>
+        <Navigation>
+          <NavItem>
+            <StyledLink to='' isActive={location.pathname === '/mypage'}>
+              홈
+            </StyledLink>
+          </NavItem>
+          <NavItem>
+            <StyledLink
+              to='myposts'
+              isActive={location.pathname === '/mypage/myposts'}
+            >
+              게시글
+            </StyledLink>
+          </NavItem>
+          <NavItem>
+            <StyledLink
+              to='scrap'
+              isActive={location.pathname === '/mypage/scrap'}
+            >
+              좋아요한 게시글
+            </StyledLink>
+          </NavItem>
+        </Navigation>
       </UserProfileSection>
       <UserContentSection>
         <Outlet />
@@ -34,23 +88,45 @@ const UserProfileSection = styled.section`
   width: 300px;
   min-height: 100vh;
   position: relative;
+  padding: 20px 0;
 `;
 
 const UserContentSection = styled.section`
-  width: 700px;
+  flex: 1;
   min-height: 100vh;
-  border-left: 1px solid black;
   padding: 10px;
 `;
 
 const AvatarContainer = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 10%);
   display: flex;
   flex-direction: column;
   gap: 10px;
   align-items: center;
 `;
 
-const UserName = styled.div``;
+const UserName = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  margin-top: 10px;
+`;
+
+const Navigation = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin-top: 40px;
+  margin-left: 20px;
+`;
+
+const NavItem = styled.li`
+  margin: 10px 0;
+`;
+
+const StyledLink = styled(Link)<{ isActive: boolean }>`
+  text-decoration: none;
+  color: ${(props) => (props.isActive ? 'black' : 'gray')};
+  font-size: 16px;
+  &:hover {
+    color: lightgray;
+  }
+`;

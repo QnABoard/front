@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AdminData } from '@/types/admindata';
 import UserCard from './UserCard';
 import styled from 'styled-components';
-import { fetchAdminData } from '@/apis/admin.api';
+import { deleteUser, fetchAdminData } from '@/apis/admin.api';
 
 // Styled Components
 const UserListContainer = styled.div`
@@ -54,8 +54,21 @@ const UserList = () => {
     setOpenUserId((prev) => (prev === id ? null : id));
   };
 
-  const handleDeleteUser = (id: number) => {
-    alert(`회원탈퇴: 유저 ID ${id}`);
+  const handleDeleteUser = async (id: number) => {
+    const confirmed = window.confirm(`유저 ID ${id}를 삭제하시겠습니까?`);
+    if (!confirmed) return;
+
+    try {
+      const result = await deleteUser(id);
+      if (result.success) {
+        alert('회원 탈퇴가 완료되었습니다.');
+        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+      } else {
+        alert('회원 탈퇴에 실패했습니다.');
+      }
+    } catch (error: any) {
+      alert(`오류 발생: ${error.message}`);
+    }
   };
 
   useEffect(() => {

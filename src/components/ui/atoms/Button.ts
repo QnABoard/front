@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 interface ButtonProps {
-  variant?: 'primary' | 'outline';
+  variant?: 'primary' | 'outline' | 'tag';
   disabled?: boolean;
+  customStyle?: string;
 }
 
 const cx = (...classes: (string | boolean | undefined)[]) =>
@@ -18,11 +19,16 @@ const styles = {
   primary: `
     background-color: mediumseagreen;
     color: white;
-    border: none;
-
-    &:hover {
-      background-color: seagreen;
-    }
+    border: black;
+    height: 30px;
+    padding: 5px;
+  `,
+  tag: `
+    background-color: white;
+    border: 1px solid mediumseagreen;
+    height: 30px;
+    padding: 5px;
+    color: mediumseagreen;
   `,
   outline: `
     background-color: white;
@@ -42,12 +48,14 @@ const styles = {
 };
 
 const Button = styled.button<ButtonProps>`
-  ${({ variant, disabled }) =>
+  ${({ variant, disabled, customStyle }) =>
     cx(
       styles.base,
       variant === 'primary' && styles.primary,
       variant === 'outline' && styles.outline,
-      disabled && styles.disabled
+      variant === 'tag' && styles.tag,
+      disabled && styles.disabled,
+      customStyle
     )}
 `;
 
