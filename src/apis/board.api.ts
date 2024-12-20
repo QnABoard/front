@@ -14,3 +14,12 @@ export const fetchUpdateReview = async (
     return response.data;
   }
 };
+
+export const updateUserIntroduce = async (id: number, content: string) => {
+  {
+    const response = await httpClient.put(`/api/users/${id}/intro`, {
+      content,
+    });
+    return response.data;
+  }
+};

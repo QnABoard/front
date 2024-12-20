@@ -3,6 +3,7 @@ import styled from 'styled-components';
 interface ButtonProps {
   variant?: 'primary' | 'outline' | 'tag';
   disabled?: boolean;
+  customStyle?: string;
 }
 
 const cx = (...classes: (string | boolean | undefined)[]) =>
@@ -47,13 +48,14 @@ const styles = {
 };
 
 const Button = styled.button<ButtonProps>`
-  ${({ variant, disabled }) =>
+  ${({ variant, disabled, customStyle }) =>
     cx(
       styles.base,
       variant === 'primary' && styles.primary,
       variant === 'outline' && styles.outline,
       variant === 'tag' && styles.tag,
-      disabled && styles.disabled
+      disabled && styles.disabled,
+      customStyle
     )}
 `;
 
