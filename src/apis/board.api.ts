@@ -15,11 +15,12 @@ export const fetchUpdateReview = async (
   }
 };
 
-export const updateUserIntroduce = async (id: number, content: string) => {
+export const updateUserIntroduce = async (id: number, intro: string) => {
   {
     const response = await httpClient.put(`/api/users/${id}/intro`, {
-      content,
+      intro,
     });
+    console.log('인트로 변경 response: ' + response);
     return response.data;
   }
 };
