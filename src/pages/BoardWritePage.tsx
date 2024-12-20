@@ -1,7 +1,7 @@
 import { fetchUpdateReview } from '@/apis/board.api';
 import Button from '@/components/ui/atoms/Button';
 import RichTextEditor from '@/components/ui/molecules/QuillEditor';
-import { TagItems } from '@/constants/tagItems';
+import { TagItems } from '@/constants/TagItems';
 import { useState } from 'react';
 import styled from 'styled-components';
 
