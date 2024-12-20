@@ -15,21 +15,18 @@ export default function QuestionFooter({
 }: Props) {
   const { like, post, handleHeartClick } = useLiked();
 
-  const tagItems = 'TypeScript,NodeJS,React';
-
   return (
     <QuestionFooterStyle>
       <div className='tags'>
-        {/* tagItems -> post.tags로 바꾸기 */}
-        {tagItems.split(',').map((tag) => (
-          <div className='tag' key={tag}>
-            {tag}
-          </div>
-        ))}
+        {post?.tags &&
+          post?.tags.split(',').map((tag) => (
+            <div className='tag' key={tag}>
+              {tag}
+            </div>
+          ))}
       </div>
       <div className='footerWrap'>
         <div className='likes' onClick={handleHeartClick}>
-          {/* 로그인 유저 좋아요 유무 */}
           <span className='heartIcon'>
             <HeartIcon
               className={`likeHeart ${like === true ? 'likeFill' : ''}`}
