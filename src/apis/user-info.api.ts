@@ -38,3 +38,15 @@ export const fetchUserInfo = async (nickname: string) => {
     throw error;
   }
 };
+
+export const fetchUserLikes = async (nickname: string) => {
+  try {
+    const url = `/api/users/${nickname}/likes`;
+    const response = await httpClient.get<{ posts: Post[] }>(url);
+    console.log(response.data.posts);
+    return response.data.posts;
+  } catch (error) {
+    console.error('Error fetching user likes:', error);
+    throw error;
+  }
+};

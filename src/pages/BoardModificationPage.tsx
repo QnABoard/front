@@ -1,5 +1,5 @@
 import { updateUserIntroduce } from '@/apis/board.api';
-import { UserData, fetchUserInfo } from '@/apis/user-info.api';
+import { fetchUserInfo } from '@/apis/user-info.api';
 import Button from '@/components/ui/atoms/Button';
 import RichTextEditor from '@/components/ui/molecules/QuillEditor';
 import { RootState } from '@/store/rootReducer';
