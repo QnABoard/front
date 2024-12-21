@@ -35,7 +35,7 @@ interface Props {
   error?: unknown;
 }
 
-function QuestionBox({posts = [], isLoading, error} : Props) {
+function QuestionBox({ posts = [], isLoading, error }: Props) {
   // const [posts, setPosts] = useState<mainPosts[]>([]);
   // const [loading, setLoading] = useState<boolean>(true);
   // const [error, setError] = useState<string | null>(null);
@@ -56,24 +56,26 @@ function QuestionBox({posts = [], isLoading, error} : Props) {
   // }, []);
 
   if (isLoading) return <div>데이터를 불러오는 중...</div>;
-  if (error as boolean) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
+  if (error as boolean)
+    return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
 
   return (
     <QuestionBoxContainer>
-      {Array.isArray(posts) && posts.map((post) => (
-        <QuestionItem key={post.id}>
-          <QuestionHeader solved={post.solved} title={post.title} />
-          <QuestionBody content={post.content} />{' '}
-          {post.tags && <QuestionTag tags={post.tags.split(',')} />}
-          <QuestionBottom
-            nickname={post.nickname}
-            time={post.created_at}
-            likes={post.like_count}
-            comments={post.comment_count}
-            views={post.view}
-          />
-        </QuestionItem>
-      ))}
+      {Array.isArray(posts) &&
+        posts.map((post) => (
+          <QuestionItem key={post.id} to={`/posts/${post.id}`}>
+            <QuestionHeader solved={post.solved} title={post.title} />
+            <QuestionBody content={post.content} />{' '}
+            {post.tags && <QuestionTag tags={post.tags.split(',')} />}
+            <QuestionBottom
+              nickname={post.nickname}
+              time={post.created_at}
+              likes={post.like_count}
+              comments={post.comment_count}
+              views={post.view}
+            />
+          </QuestionItem>
+        ))}
     </QuestionBoxContainer>
   );
 }
