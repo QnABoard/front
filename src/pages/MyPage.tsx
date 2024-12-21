@@ -1,26 +1,41 @@
 import { useEffect, useState } from 'react';
-import Avatar from '@/components/ui/atoms/Avator';
 import { useSelector } from 'react-redux';
 import { Link, Outlet, useLocation } from 'react-router';
 import styled from 'styled-components';
 import { RootState } from '@/store/rootReducer';
-import { fetchUserInfo, UserData } from '@/apis/user-info.api';
+import {
+  fetchUserInfo,
+  updateUserIcon,
+  updateUserNickname,
+  UserData,
+} from '@/apis/user-info.api';
+import Button from '@/components/ui/atoms/Button';
+import ImageUpload from '@/components/ImageUpload';
 
 const MyPage = () => {
   const location = useLocation();
   const nickname = useSelector(
     (state: RootState) => state.user.userInfo?.nickname
   );
+  const userId = useSelector((state: RootState) => state.user.userInfo?.id);
 
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const [newNickname, setNewNickname] = useState<string>('');
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [initialPreview, setInitialPreview] = useState<string>('');
 
+  // 유저 데이터 불러오기
   useEffect(() => {
     if (nickname) {
       setLoading(true);
       fetchUserInfo(nickname)
         .then((data) => {
           setUserData(data);
+          setNewNickname(data.profile.nickname);
+          setInitialPreview(data.profile.icon || ''); // 초기 아이콘 URL 설정
           setLoading(false);
         })
         .catch((error) => {
@@ -28,7 +43,50 @@ const MyPage = () => {
           setLoading(false);
         });
     }
-  }, [nickname]);
+  }, []);
+
+  // 닉네임 저장 API 호출
+  const handleNicknameSave = async () => {
+    if (!userId || !newNickname) return;
+    setLoading(true);
+    try {
+      const response = await updateUserNickname(userId, newNickname);
+      if (response.success) {
+        setUserData((prev) =>
+          prev
+            ? { ...prev, profile: { ...prev.profile, nickname: newNickname } }
+            : null
+        );
+        setIsEditingNickname(false);
+      }
+    } catch (err: any) {
+      setError(err.message || '닉네임 수정 중 오류가 발생했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 프로필 이미지 업로드 API 호출
+  const handleProfileIconUpload = async (file: File) => {
+    if (!userId) return;
+    try {
+      setIsUploading(true);
+      const response = await updateUserIcon(userId, file);
+      if (response.success) {
+        console.log('프로필 아이콘이 성공적으로 업데이트되었습니다.');
+        setUserData((prev) =>
+          prev
+            ? { ...prev, profile: { ...prev.profile, icon: response.icon } }
+            : null
+        );
+        setInitialPreview(response.icon || ''); // 아이콘 URL 업데이트
+      }
+    } catch (error: any) {
+      console.error('프로필 아이콘 업데이트 실패:', error.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -38,12 +96,31 @@ const MyPage = () => {
     <MyPageContainer>
       <UserProfileSection>
         <AvatarContainer>
-          <Avatar
-            src='https://jmagazine.joins.com/_data2/photo/2021/04/838745483_D5lXOQuU_5.jpg'
-            size='big'
-            alt='User Avatar'
+          <ImageUpload
+            initialPreview={initialPreview} // 초기 아이콘 URL 전달
+            onUpload={handleProfileIconUpload} // userId를 내부에서 사용
+            isUploading={isUploading}
           />
-          <UserName>{userData?.profile.nickname}님</UserName>
+          {isEditingNickname ? (
+            <NicknameInput
+              value={newNickname}
+              onChange={(e) => setNewNickname(e.target.value)}
+            />
+          ) : (
+            <UserName>{userData?.profile.nickname}님</UserName>
+          )}
+          <Button
+            variant='primary'
+            customStyle='position: absolute; bottom: -5px; right: 40px;'
+            onClick={
+              isEditingNickname
+                ? handleNicknameSave
+                : () => setIsEditingNickname(true)
+            }
+          >
+            {isEditingNickname ? '저장' : '수정하기'}
+          </Button>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
         </AvatarContainer>
         <Navigation>
           <NavItem>
@@ -102,6 +179,7 @@ const AvatarContainer = styled.div`
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  position: relative;
 `;
 
 const UserName = styled.div`
@@ -109,6 +187,16 @@ const UserName = styled.div`
   font-weight: bold;
   color: black;
   margin-top: 10px;
+`;
+
+const NicknameInput = styled.input`
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
 `;
 
 const Navigation = styled.ul`
@@ -129,4 +217,16 @@ const StyledLink = styled(Link)<{ isActive: boolean }>`
   &:hover {
     color: lightgray;
   }
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+`;
+
+const UploadingText = styled.p`
+  margin-top: 10px;
+  font-size: 14px;
+  color: gray;
 `;
