@@ -3,9 +3,11 @@ import Button from '@/components/ui/atoms/Button';
 import RichTextEditor from '@/components/ui/molecules/QuillEditor';
 import { TagItems } from '@/constants/TagItems';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 const BoardWritePage = () => {
+  const navigate = useNavigate();
   const [title, setTitle] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [content, setContent] = useState<string>('');
@@ -39,6 +41,7 @@ const BoardWritePage = () => {
       );
       console.log('게시글 등록 성공:', response);
       alert('게시글이 성공적으로 등록되었습니다!');
+      navigate('/');
     } catch (error) {
       console.error('게시글 등록 실패:', error);
       alert('게시글 등록에 실패했습니다. 다시 시도해주세요.');
