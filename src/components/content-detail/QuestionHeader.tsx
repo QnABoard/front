@@ -73,6 +73,7 @@ const QuestionHeaderStyle = styled.div`
 
   .title {
     font-size: 30px;
+    margin-bottom: 10px;
   }
   .panel {
     display: flex;

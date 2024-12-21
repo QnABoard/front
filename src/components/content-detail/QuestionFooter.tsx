@@ -87,6 +87,8 @@ const QuestionFooterStyle = styled.div`
     display: flex;
     line-height: 24px;
     gap: 20px;
+    margin-top: 30px;
+
     .likes {
       display: flex;
       cursor: pointer;
@@ -125,11 +127,13 @@ const QuestionFooterStyle = styled.div`
   .solvedWrap {
     width: 100%;
     border-radius: 20px;
+    margin-top: 30px;
+
     .solvedStatus {
       padding: 2.5rem 3.5rem;
       display: flex;
       justify-content: space-between;
-      font-size: 1.3rem;
+      font-size: 15px;
 
       .left {
         display: flex;
@@ -137,7 +141,7 @@ const QuestionFooterStyle = styled.div`
         gap: 20px;
 
         .solvedTitle {
-          font-size: 2rem;
+          font-size: 25px;
         }
       }
       .right {
@@ -145,8 +149,8 @@ const QuestionFooterStyle = styled.div`
         align-items: center;
         .solveButton {
           cursor: pointer;
-          border: 1px solid #e6e6e6;
-          font-size: 1.5rem;
+          border: 1px solid #c9ffcf;
+          font-size: 15px;
           height: fit-content;
           padding: 1rem 1.5rem;
           border-radius: 50px;
