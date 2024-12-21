@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import Avatar from './ui/atoms/Avator';
@@ -8,13 +8,32 @@ import { logout } from '@/hooks/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/rootReducer';
 import { removeToken } from '@/utils/token';
+import { fetchUserInfo } from '@/apis/user-info.api';
 
 const MenuButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [icon, setIcon] = useState<string>(defaultAvatar);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const role = useSelector((state: RootState) => state.user.userInfo?.role);
+  const nickname = useSelector(
+    (state: RootState) => state.user.userInfo?.nickname
+  );
+
+  // 유저 데이터 로드
+  useEffect(() => {
+    if (isLoggedIn && nickname) {
+      fetchUserInfo(nickname)
+        .then((data) => {
+          setIcon(data.profile.icon || defaultAvatar);
+        })
+        .catch((error) => {
+          console.error('유저 데이터 로드 중 오류 발생:', error);
+          setIcon(defaultAvatar);
+        });
+    }
+  }, [isLoggedIn, nickname]);
 
   const handleMyPage = () => {
     setIsOpen(false);
@@ -41,10 +60,6 @@ const MenuButton = () => {
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);
   };
-
-  const nickname = useSelector(
-    (state: RootState) => state.user.userInfo?.nickname
-  );
 
   return (
     <DropdownContainer>
@@ -73,11 +88,7 @@ const MenuButton = () => {
             >
               <AvatarContainer>
                 <Avatar
-                  src={
-                    isLoggedIn
-                      ? 'https://jmagazine.joins.com/_data2/photo/2021/04/838745483_D5lXOQuU_5.jpg'
-                      : defaultAvatar
-                  }
+                  src={isLoggedIn ? icon : defaultAvatar}
                   size='small'
                   disabled={!isLoggedIn}
                   alt='User Avatar'
