@@ -7,8 +7,10 @@ import QuestionHeader from '../ui/molecules/mainpage-molecule/QuestionHeader';
 import QuestionBody from '../ui/molecules/mainpage-molecule/QuestionBody';
 import QuestionTag from '../ui/atoms/mainpage-atom/QuesitonTag';
 import QuestionBottom from '../ui/molecules/mainpage-molecule/QuestionBottom';
+import { useNavigate } from 'react-router';
 
 const UserPosts = () => {
+  const navigate = useNavigate();
   const nickname = useSelector(
     (state: RootState) => state.user.userInfo?.nickname
   );
@@ -41,7 +43,10 @@ const UserPosts = () => {
       <QuestionBoxContainer>
         {userData &&
           userData.posts.map((post) => (
-            <QuestionItem key={post.id}>
+            <QuestionItem
+              key={post.id}
+              onClick={() => navigate(`/posts/${post.id}`)}
+            >
               <QuestionHeader solved={post.solved} title={post.title} />
               <QuestionBody content={post.content} />
               {post.tags && <QuestionTag tags={post.tags.split(',')} />}
@@ -82,4 +87,15 @@ const QuestionBoxContainer = styled.div`
 
 const QuestionItem = styled.div`
   margin: 10px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 `;
