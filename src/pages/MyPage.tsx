@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, Outlet, useLocation } from 'react-router';
 import styled from 'styled-components';
 import { RootState } from '@/store/rootReducer';
@@ -11,9 +11,11 @@ import {
 } from '@/apis/user-info.api';
 import Button from '@/components/ui/atoms/Button';
 import ImageUpload from '@/components/ImageUpload';
+import { updateNickname } from '@/hooks/userSlice';
 
 const MyPage = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const nickname = useSelector(
     (state: RootState) => state.user.userInfo?.nickname
   );
@@ -35,7 +37,7 @@ const MyPage = () => {
         .then((data) => {
           setUserData(data);
           setNewNickname(data.profile.nickname);
-          setInitialPreview(data.profile.icon || ''); // 초기 아이콘 URL 설정
+          setInitialPreview(data.profile.icon || '');
           setLoading(false);
         })
         .catch((error) => {
@@ -43,20 +45,23 @@ const MyPage = () => {
           setLoading(false);
         });
     }
-  }, []);
+  }, [nickname]);
 
-  // 닉네임 저장 API 호출
   const handleNicknameSave = async () => {
-    if (!userId || !newNickname) return;
+    if (!userId || !newNickname.trim()) return;
     setLoading(true);
     try {
-      const response = await updateUserNickname(userId, newNickname);
+      const response = await updateUserNickname(userId, newNickname.trim());
       if (response.success) {
         setUserData((prev) =>
           prev
-            ? { ...prev, profile: { ...prev.profile, nickname: newNickname } }
+            ? {
+                ...prev,
+                profile: { ...prev.profile, nickname: newNickname.trim() },
+              }
             : null
         );
+        dispatch(updateNickname(newNickname.trim()));
         setIsEditingNickname(false);
       }
     } catch (err: any) {
@@ -97,8 +102,8 @@ const MyPage = () => {
       <UserProfileSection>
         <AvatarContainer>
           <ImageUpload
-            initialPreview={initialPreview} // 초기 아이콘 URL 전달
-            onUpload={handleProfileIconUpload} // userId를 내부에서 사용
+            initialPreview={initialPreview}
+            onUpload={handleProfileIconUpload}
             isUploading={isUploading}
           />
           {isEditingNickname ? (

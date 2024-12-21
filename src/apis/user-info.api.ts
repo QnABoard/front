@@ -34,11 +34,10 @@ export const fetchUserInfo = async (nickname: string) => {
     console.log(response);
     return response.data;
   } catch (error) {
-    console.error('Error fetching admin data:', error);
+    console.error('Error fetching user data:', error);
     throw error;
   }
 };
-
 export const fetchUserLikes = async (nickname: string) => {
   try {
     const url = `/api/users/${nickname}/likes`;

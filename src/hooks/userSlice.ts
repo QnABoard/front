@@ -48,6 +48,11 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    updateNickname: (state, action: PayloadAction<string>) => {
+      if (state.userInfo) {
+        state.userInfo.nickname = action.payload;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -81,5 +86,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, updateNickname } = userSlice.actions;
 export default userSlice.reducer;

@@ -46,7 +46,7 @@ function QuestionBox() {
       {posts.map((post) => (
         <QuestionItem key={post.id}>
           <QuestionHeader solved={post.solved} title={post.title} />
-          <QuestionBody content={post.content} />
+          <QuestionBody content={post.content} />{' '}
           {post.tags && <QuestionTag tags={post.tags.split(',')} />}
           <QuestionBottom
             nickname={post.nickname}
