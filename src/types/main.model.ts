@@ -1,10 +1,8 @@
-export interface mainUsers {
-  users: string | null;
-}
+import { Pagination } from './pagination.model';
+
 export interface mainTags {
   id: number | null;
   name: string;
-  isActive?: boolean;
 }
 export interface mainPosts {
   id: number;
@@ -18,8 +16,9 @@ export interface mainPosts {
   view: number;
   tags: string | null;
 }
+
 export interface mainData {
-  users: mainUsers;
   tags: mainTags[];
   posts: mainPosts[];
+  pagination: Pagination;
 }
