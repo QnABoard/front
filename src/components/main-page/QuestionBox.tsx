@@ -1,5 +1,8 @@
+// src/components/QuestionBox.tsx
+
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router'; // Link import 추가
 import QuestionBody from '../ui/molecules/mainpage-molecule/QuestionBody';
 import QuestionHeader from '../ui/molecules/mainpage-molecule/QuestionHeader';
 import QuestionTag from '../ui/atoms/mainpage-atom/QuesitonTag';
@@ -11,11 +14,23 @@ const QuestionBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
-  gap: 30px;
+  gap: 10px;
 `;
 
-const QuestionItem = styled.div`
+// Link를 기반으로 한 styled component로 변경
+const QuestionItem = styled(Link)`
   margin: 10px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 function QuestionBox() {
@@ -44,7 +59,7 @@ function QuestionBox() {
   return (
     <QuestionBoxContainer>
       {posts.map((post) => (
-        <QuestionItem key={post.id}>
+        <QuestionItem key={post.id} to={`/posts/${post.id}`}>
           <QuestionHeader solved={post.solved} title={post.title} />
           <QuestionBody content={post.content} />
           {post.tags && <QuestionTag tags={post.tags.split(',')} />}
