@@ -50,6 +50,11 @@ const MenuButton = () => {
     navigate('/login');
   };
 
+  const handleWritePage = () => {
+    setIsOpen(false);
+    navigate('/boardwrite');
+  };
+
   const handleLogout = () => {
     dispatch(logout());
     removeToken();
@@ -103,6 +108,7 @@ const MenuButton = () => {
                 ) : (
                   <li onClick={handleMyPage}>마이페이지</li>
                 )}
+                <li onClick={handleWritePage}>작성하기</li>
                 <li>문의하기</li>
                 <li>서비스 소개</li>
                 <li onClick={handleLogout}>로그아웃</li>
